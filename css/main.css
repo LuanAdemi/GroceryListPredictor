@@ -1886,7 +1886,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #header.header-scrolled {
-  background: rgba(20, 2, 0, 0.8);
+  background: rgba(34, 92, 199, 0.8);
   transition: all 0.5s;
 }
 
@@ -2283,7 +2283,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .banner-area {
-  background: url(../img/header-bg.jpg) center;
+  background: url(../img/supermarket.jpg) center;
   background-size: cover;
 }
 
@@ -2295,7 +2295,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 @media (max-width: 768px) {
   .banner-area {
-    background: url(../img/header-bg.jpg);
+    background: url(../img/supermarket.jpg);
     background-position: 50% 90% 50% 50%;
   }
 }
@@ -2449,7 +2449,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .review-area {
-  background-color: #b68834;
+  background-color: rgb(24, 71, 158);
   color: #fff;
 }
 
