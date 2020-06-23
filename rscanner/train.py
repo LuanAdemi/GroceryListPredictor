@@ -12,28 +12,33 @@ import torch.nn.functional as F
 import random
 
 # the dataset
-training_data = [
-    'l CITYBahnhofplatz  MnchenUID Nr DE K EUR Stk x  P  B  A  A'.split(), 
-    'SPRUEHSAHNE VANILLE MILCHSCHOKOSTR  BKLPAPIERTASCHE TRINKHALME'.split(), 
-]
+with open('rscanner/data/c0.txt', 'r') as file:
+    c0 = file.read()
+
+with open('rscanner/data/c1.txt', 'r') as file:
+    c1 = file.read()
+
+with open('rscanner/data/c2.txt', 'r') as file:
+    c2 = file.read()
+
+training_data = [c0.upper().split(), c1.upper().split(), c2.upper().split()]
 
 # a test dataset
-test_data = 'l CITYBahnhofplatz  MnchenUID Nr DE K SPRUEHSAHNE EUR Stk x O MILCH E SCHOKOLADE P VANILLE D BUTTERMILCH R K VANILLESCHOTE  B MILCHSCHOKOSTR MILCHSCHOKOLADE BKLPAPIERTASCHE  A TRINKHALME  A'.split()
+test_data = 'l CITYBahnhofplatz  MnchenUID Nr DE K SPRUEHSAHNE EUR Stk x O MILCH E SCHOKOLADE P VANILLE D BUTTERMILCH R K VANILLESCHOTE  B MILCHSCHOKOSTR MILCHSCHOKOLADE BKLPAPIERTASCHE  A TRINKHALME  A'.upper().split()
 
 n_hidden = 128
 
-all_letters = string.ascii_letters + " .,;'"
+all_letters = string.ascii_letters + " .,;'" + "äÄüÜöÖ"
 n_letters = len(all_letters)
 
-rnn = RNN(n_letters, n_hidden, 2)
+rnn = RNN(n_letters, n_hidden, 3)
 
 learning_rate = 0.005
 
 criterion = nn.NLLLoss()
 
-
 def randomTrainingExample():
-    category = random.randint(0,1)
+    category = random.randint(0,2)
     line = randomChoice(training_data[category])
 
     category_tensor = torch.tensor([category], dtype=torch.long)
@@ -57,7 +62,6 @@ def train(category_tensor, line_tensor):
 
     return output, loss.item()
 
-
 def evaluate(line_tensor):
     hidden = rnn.initHidden()
 
@@ -67,7 +71,7 @@ def evaluate(line_tensor):
     return output
 
 def trainOnData():
-    n_iters = 100000
+    n_iters = 150000
     print_every = 5000
     plot_every = 1000
 
@@ -99,14 +103,11 @@ def trainOnData():
             all_losses.append(current_loss / plot_every)
             current_loss = 0
     
-    print("\n Evaluating... \n")
-    for i in range(len(test_data)-1):
-        output = evaluate(lineToTensor(test_data[i]))
-        category = categoryFromOutput(output)
-        if category == 1:
-            print(test_data[i])
+#    print("\n Evaluating... \n")
+#    for i in range(len(test_data)-1):
+#        output = evaluate(lineToTensor(test_data[i]))
+#        category = categoryFromOutput(output)
+#        if category == 1:
+#            print(test_data[i])
 
     torch.save(rnn.state_dict(), "rscanner/state_dicts/model.pt")
-
-
-    

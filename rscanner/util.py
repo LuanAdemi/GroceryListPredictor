@@ -3,7 +3,7 @@ import torch
 import random
 
 # create a list with all ascii letters
-all_letters = string.ascii_letters + " .,;'"
+all_letters = string.ascii_letters + " .,;'" + "äÄüÜöÖ"
 n_letters = len(all_letters)
 
 # maps every ascii character to an individual number
