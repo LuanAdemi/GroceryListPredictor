@@ -53,7 +53,6 @@ def train(category_tensor, line_tensor):
     for i in range(line_tensor.size()[0]):
         output, hidden = rnn(line_tensor[i], hidden)
 
-    print(output)
     loss = criterion(output, category_tensor)
     loss.backward()
 

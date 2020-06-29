@@ -29,6 +29,7 @@ def lineToTensor(line, dim=-1):
             tensor[li][0][letterToIndex(letter)] = 1
     return tensor
 
+# converts a tensor to text
 def tensorToLine(tensor):
     tensor = tensor.numpy()
     line = ""
