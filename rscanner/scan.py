@@ -25,13 +25,16 @@ def evaluate(line_tensor):
 def loadModel(path):
     rnn.load_state_dict(torch.load(path))
 
-def scan(filePath):
+def scan(filePath, debug):
     gray_img = cv2.imread(filePath, cv2.IMREAD_GRAYSCALE)
 
     products = []
 
     kassenzettel = pytesseract.image_to_string(gray_img, lang='deu')
 
+
+    kassenzettel = kassenzettel.replace("\n"," ")
+    print(kassenzettel)
     # remove unwanted characters using regex
     regex = re.compile('[^a-zA-Z äÄüÜöÖ]')
 
@@ -39,6 +42,9 @@ def scan(filePath):
     produkte = kassenzettel[:kassenzettel.upper().find("SUMME")]
     
     produkte = regex.sub('', produkte).upper()
+
+    if debug:
+        print(produkte)
     
     produkte = produkte.split()
     for i in range(len(produkte)):
@@ -47,7 +53,7 @@ def scan(filePath):
         #print('%s (%d)' % (produkte[i], category))
         if category == 1:
             products.append(produkte[i])
-        if category == 2:
+        if category == 2 and i != 0:
             products[len(products)-1] += " " + produkte[i]
 
     return products
