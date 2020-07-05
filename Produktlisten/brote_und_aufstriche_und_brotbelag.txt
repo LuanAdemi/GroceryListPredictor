@@ -7,11 +7,19 @@ Toastbrot
 Weißbrot
 Weizenbrot
 
-Auftsriche:
+Aufstriche:
 Bauernschmaus
+Butter
+Erdnussbutter
 Guacamole
+Honig
 Hummus
+Leberwurst
 Marmelade
 Margarine
+Nougatcreme
+Nutella
 Schmalz
+Sirup
 Streichkäse
+Zuckerrübensirup
