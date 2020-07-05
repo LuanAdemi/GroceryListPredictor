@@ -1,0 +1,17 @@
+Brote:
+Baguette
+Fladenbrot
+Knäckebrot
+Roggenbrot
+Toastbrot
+Weißbrot
+Weizenbrot
+
+Auftsriche:
+Bauernschmaus
+Guacamole
+Hummus
+Marmelade
+Margarine
+Schmalz
+Streichkäse
