@@ -1,13 +1,3 @@
-Brote:
-Baguette
-Fladenbrot
-Knäckebrot
-Roggenbrot
-Toastbrot
-Weißbrot
-Weizenbrot
-
-Aufstriche:
 Bauernschmaus
 Butter
 Erdnussbutter
