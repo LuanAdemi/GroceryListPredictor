@@ -1,6 +1,7 @@
 Apfelsaft
 Bier
 Bionade
+Champagner
 Coca Cola
 Erdbeersaft
 Fanta
@@ -9,3 +10,4 @@ Orangensaft
 Sprite
 Sprudelwasser
 Stilles Wasser
+Wein
