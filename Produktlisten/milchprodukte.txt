@@ -12,7 +12,9 @@ Milchmischerzeugnis
 Fruchtjoghurt
 Fruchtkefir
 Milchmischgetränk
-Clotted Cream, Streichrahm, Öröm
+Clotted Cream
+Streichrahm
+Öröm
 Sahne
 Crème double
 Kaffeesahne
