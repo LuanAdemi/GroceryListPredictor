@@ -2284,12 +2284,11 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 .banner-area {
   background: url(../img/supermarket.jpg) center;
-  background-size: cover;
 }
 
 @media (max-width: 1199.98px) {
   .banner-area .fullscreen {
-    height: 920px !important;
+    height: 920px;
   }
 }
 
@@ -2526,8 +2525,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 .footer-area {
   color: #fff;
-  padding-top: 220px;
-  background: url(../img/footer-bg.jpg) center;
+  padding-top: 120px;
+  background-color: #222222;
   background-size: cover;
 }
 
