@@ -27,7 +27,7 @@ This sub-module is responsable for retrieving the items from a reciept, the user
 
 (Binder link coming soon)
 
-This sub-module uses the information gained by the other sub-modules to predict the items you should buy next time you are going to a supermarket. There too is no heavy developmend around this sub-module at the moment.
+This sub-module uses the information gained by the other sub-modules to predict the items you should buy next time you are going to a supermarket. There too is no heavy development around this sub-module at the moment.
 
 
 
