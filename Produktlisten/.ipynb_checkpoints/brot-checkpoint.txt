@@ -1,7 +1,0 @@
-Baguette
-Fladenbrot
-Knäckebrot
-Roggenbrot
-Toastbrot
-Weißbrot
-Weizenbrot
