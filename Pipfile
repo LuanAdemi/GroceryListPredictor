@@ -6,7 +6,23 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+bcrypt = "*"
 Flask = "*"
+Flask-Bcrypt = "*"
+Flask-Login = "*"
+Flask-Mail = "*"
+Flask-SQLAlchemy = "*"
+Flask-WTF = "*"
+Pillow = "*"
+SQLAlchemy = "*"
+WTForms = "*"
+Jinja2 = "*"
+DateTime = "*"
+APScheduler = "*"
+email-validator = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+dj-database-url = "*"
 
 [requires]
 python_version = "3.8"
