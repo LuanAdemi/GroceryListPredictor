@@ -40,10 +40,6 @@ def gettingstarted():
 	
 	return render_template("gettingstarted.html", rform=rform, lform=lform)
 
-@app.route("/about")
-def about():
-	return render_template("about.html")
-
 
 @app.route("/logout")
 def logout():
