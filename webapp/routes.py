@@ -10,43 +10,40 @@ from webapp.forms import RegistrationForm, LoginForm
 def home():
 	return render_template("base.html")
 
-
-@app.route("/about")
-def about():
-	return render_template("about.html")
-
-
-@app.route("/register", methods=["GET","POST"])
-def register():
+# TODO: Route to dashboard
+@app.route("/gettingstarted", methods=["GET","POST"])
+def gettingstarted():
 	if current_user.is_authenticated:
 		return redirect(url_for("home"))
-	form = RegistrationForm()
-	if form.validate_on_submit():
-		hashed_password = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
-		user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+		
+	rform = RegistrationForm()
+	lform = LoginForm()
+
+	if rform.validate_on_submit():
+		hashed_password = bcrypt.generate_password_hash(rform.password.data).decode("utf-8")
+		user = User(username=rform.username.data, email=rform.email.data, password=hashed_password)
 		db.session.add(user)
 		db.session.commit()
-		flash(f"Account created for {form.username.data}! You were logged in!", "success")
+		flash(f"Account created for {rform.username.data}! You were logged in!", "success")
 		login_user(user)
 		next_page = request.args.get("next")
 		return redirect(next_page) if next_page else redirect(url_for("home"))
-	return render_template("register.html", form=form)
 
-
-@app.route("/login", methods=["GET","POST"])
-def login():
-	if current_user.is_authenticated:
-		return redirect(url_for("home"))
-	form = LoginForm()
-	if form.validate_on_submit():
-		user = User.query.filter_by(email=form.email.data).first()
-		if user and bcrypt.check_password_hash(user.password, form.password.data):
+	if lform.validate_on_submit():
+		user = User.query.filter_by(email=lform.email.data).first()
+		if user and bcrypt.check_password_hash(user.password, lform.password.data):
 			login_user(user)
 			next_page = request.args.get("next")
 			return redirect(next_page) if next_page else redirect(url_for("home"))
 		else:
 			flash("Login unsuccessful. Please check username and password", "danger")
-	return render_template("login.html", form=form)
+	
+	return render_template("gettingstarted.html", rform=rform, lform=lform)
+
+@app.route("/about")
+def about():
+	return render_template("about.html")
+
 
 @app.route("/logout")
 def logout():
