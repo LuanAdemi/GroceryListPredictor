@@ -1,6 +1,6 @@
 # Setup
 > [!Warning]
-> Python 3.8 is needed for this project to work correctly. Get it <a href="https://www.python.org/downloads/">here</a>.
+> Python 3.8.3 is needed for this project to work correctly. Get it <a href="https://www.python.org/downloads/">here</a>.
 
 ## Required libraries 
 We use <a href="https://pipenv.pypa.io/en/latest/">pipenv</a> to ensure, that everything will be setup automatically. 
