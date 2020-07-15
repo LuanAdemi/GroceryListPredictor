@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
 
-<div class="w3-row w3-hide-medium w3-hide-small" style="height: 80px;background-color: rgba(255,255,255,0.9);position: fixed;width: 100%;z-index: 10;">
+<div class="w3-row w3-hide-medium w3-hide-small" style="height: 80px;background-color: rgba(255,255,255,0.9);width: 100%;z-index: 10;">
     <div class="w3-half" style="height: 100%;display: flex;align-items: center;justify-content:flex-start;" class="w3-hide-medium w3-hide-small">
         <img src="{{ url_for('static', filename='img/GLPLogo.png') }}" style="height: 60px;margin-left: 5%;">
     </div>
@@ -30,17 +30,29 @@
 
 </div>
 
+<div class="spaceLine" style="height: 80%;">
 
-<div class="w3-container" style="height: 100%;">
-    <div class="w3-half" >
-        <div style="height: 80%;display: flex;align-items: center;justify-content: center;">
+<div class="w3-container" style="height: 50%;">
+    <div class="w3-half" style="display: flex;align-items: center;justify-content: center;height: 100%;">
+        <h2 style="text-align: center;font-size: 3vw;text-shadow: 2px 2px 6px rgba(0,0,0,0.2);">Join us today!</h2>
+    </div>
+    <div class="w3-half" style="display: flex;align-items: center;justify-content: center;height: 100%;">
+        <h2 style="text-align: center;font-size: 3vw;text-shadow: 2px 2px 6px rgba(0,0,0,0.2);">Sign in!</h2>
+    </div>
+</div>
+
+
+<div class="w3-container" style="height: 50%;">
+    <div class="w3-half signup" >
+        <div style="height: 30%;display: flex;align-items: center;justify-content: center;">
         <div class="container mt-5 mb-5">
-            <h2 style="text-align: center;margin-bottom: 50px;font-size: 3vw;">Join us today!</h2>
+            
             <div class="col-lg-6 center-form">
                 <form method="POST" action="">
                     {{ rform.hidden_tag() }}
                     <fieldset class="form-group">
-                        <div class="mb-3">
+                    <div class="w3-container">
+                        <div class="w3-half" style="padding-right: 10px;">
                             {{ rform.username.label(class="form-control-label") }}
         
                             {% if rform.username.errors %}
@@ -54,7 +66,7 @@
                                 {{ rform.username(class="form-control form-control-lg") }}
                             {% endif %}
                         </div>
-                        <div class="mb-3">
+                        <div class="w3-half" style="padding-right: 10px;">
                             {{ rform.email.label(class="form-control-label") }}
                             {% if rform.email.errors %}
                                 {{ rform.email(class="form-control form-control-lg is-invalid") }}
@@ -67,7 +79,9 @@
                                 {{ rform.email(class="form-control form-control-lg") }}
                             {% endif %}
                         </div>
-                        <div class="mb-3">
+                    </div>
+                    <div class="w3-container">
+                        <div class="w3-half" style="padding-right: 10px;">
                             {{ rform.password.label(class="form-control-label") }}
                             {% if rform.password.errors %}
                                 {{ rform.password(class="form-control form-control-lg is-invalid") }}
@@ -80,7 +94,7 @@
                                 {{ rform.password(class="form-control form-control-lg") }}
                             {% endif %}
                         </div>
-                        <div class="mb-3">
+                        <div class="w3-half" style="padding-right: 10px;">
                             {{ rform.confirm_password.label(class="form-control-label") }}
                             {% if rform.confirm_password.errors %}
                                 {{ rform.confirm_password(class="form-control form-control-lg is-invalid") }}
@@ -93,24 +107,26 @@
                                 {{ rform.confirm_password(class="form-control form-control-lg") }}
                             {% endif %}
                         </div>
-                    </fieldset>
-                    <div class="form-group">
                         {{ rform.submit(class="btn btn-outline-info") }}
                     </div>
+                    
+                        
+
+                    
+                    </fieldset>
                 </form>
             </div>
         </div>
     </div>
     </div>
-    <div class="w3-half" style="height: 100%;display: flex;align-items: center; justify-content: center;">
-
+    <div class="w3-half signin">
+        <div style="height: 30%;display: flex;align-items: center;justify-content: center;">
         <div class="container mt-5 mb-5">
-            <h2 style="text-align: center;margin-bottom: 50px;font-size: 3vw;">Sign in!</h2>
             <div class="col-lg-6 center-form">
                 <form method="POST" action="">
                     {{ lform.hidden_tag() }}
                     <fieldset class="form-group">
-                        <div class="mb-3">
+                        <div class="">
                             {{ lform.email.label(class="form-control-label") }}
                             {% if lform.email.errors %}
                                 {{ lform.email(class="form-control form-control-lg is-invalid") }}
@@ -123,7 +139,7 @@
                                 {{ lform.email(class="form-control form-control-lg") }}
                             {% endif %}
                         </div>
-                        <div class="mb-3">
+                        <div class="">
                             {{ lform.password.label(class="form-control-label") }}
                             {% if lform.password.errors %}
                                 {{ lform.password(class="form-control form-control-lg is-invalid") }}
@@ -140,15 +156,109 @@
                             {{ lform.remember(class="form-check-input") }}
                             {{ lform.remember.label() }}
                         </div>-->
-                    </fieldset>
-                    <div class="form-group">
                         {{ lform.submit(class="btn btn-outline-info") }}
-                    </div>
+                    </fieldset>
+                    
+                        
                 </form>
             
             </div>
         </div>
 
     </div>
+    </div>
 </div>
+</div>
+
+<style>
+    .spaceLine {
+        background-image: url("{{ url_for('static', filename='img/spaceLine.svg') }}");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+    }
+
+    fieldset {
+        border: none;
+        color: #3F3D56;
+    }
+    input[type="text"] {
+        border: 2px solid rgba(72, 102, 230, 0.5);
+        border-radius: 20px;
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+    }
+
+    input[type=text]:focus {
+        border: 2px solid rgba(72, 102, 230, 1);
+}
+
+    input[type="password"] {
+        border: 2px solid rgba(72, 102, 230, 0.5);
+        border-radius: 20px;
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+    }
+    
+    input[type=password]:focus {
+        border: 2px solid rgba(72, 102, 230, 1);
+}
+
+    label {
+        color: #4866E6;
+    }
+
+    .signup input[type="submit"] {
+        border: 2px solid rgba(72, 102, 230, 1);
+        border-radius: 20px;
+        padding: 12px 0px;
+        margin: 8px 0;
+        width: calc( 100% - 10px);
+        color: #4866E6;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        
+    }
+
+    .signin input[type="submit"] {
+        border: 2px solid rgba(72, 102, 230, 1);
+        border-radius: 20px;
+        padding: 12px 0px;
+        margin: 8px 0;
+        width: 100%;
+        color: #4866E6;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        
+    }
+
+    input[type="submit"]:hover {
+        border: 2px solid rgba(72, 102, 230, 1);
+        background-color: #4866E6;
+        color: white;
+        cursor: pointer;
+    }
+
+    .password input {
+        margin-right: 0px;
+    }
+
+    .password label {
+        margin-left: 10px;
+    }
+
+
+</style>
 </html>
