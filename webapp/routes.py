@@ -10,11 +10,16 @@ from webapp.forms import RegistrationForm, LoginForm
 def home():
 	return render_template("base.html")
 
-# TODO: Route to dashboard
+@app.route("/dashboard/overview")
+def dashboard():
+	if not current_user.is_authenticated:
+		return redirect(url_for("home"))
+	return render_template("dashboard/overview.html", username=current_user.username)
+
 @app.route("/gettingstarted", methods=["GET","POST"])
 def gettingstarted():
 	if current_user.is_authenticated:
-		return redirect(url_for("home"))
+		return redirect(url_for("dashboard"))
 		
 	rform = RegistrationForm()
 	lform = LoginForm()
@@ -27,14 +32,14 @@ def gettingstarted():
 		flash(f"Account created for {rform.username.data}! You were logged in!", "success")
 		login_user(user)
 		next_page = request.args.get("next")
-		return redirect(next_page) if next_page else redirect(url_for("home"))
+		return redirect(next_page) if next_page else redirect(url_for("dashboard"))
 
 	if lform.validate_on_submit():
 		user = User.query.filter_by(email=lform.email.data).first()
 		if user and bcrypt.check_password_hash(user.password, lform.password.data):
 			login_user(user)
 			next_page = request.args.get("next")
-			return redirect(next_page) if next_page else redirect(url_for("home"))
+			return redirect(next_page) if next_page else redirect(url_for("dashboard"))
 		else:
 			flash("Login unsuccessful. Please check username and password", "danger")
 	
