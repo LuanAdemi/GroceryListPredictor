@@ -4,6 +4,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 from webapp.modules import User
 from webapp.forms import RegistrationForm, LoginForm
 
+import os.path
+
 
 @app.route("/")
 @app.route("/home")
@@ -15,13 +17,26 @@ def home():
 def dashboardOverview():
 	if not current_user.is_authenticated:
 		return redirect(url_for("home"))
+
+	profilePic = url_for('static', filename="userPictures/default.png")
+	if os.path.exists("webapp/static/userPictures/" + str(current_user.id) + '.png'):
+		profilePic=url_for('static', filename='userPictures/' + str(current_user.id) + '.png')
 	return render_template("dashboard/overview.html", 
 	username=current_user.username, 
-	profilePic=url_for('static', filename='userPictures/' + str(current_user.id) + '.png'),
+	profilePic=profilePic,
 	numReceipts=42,
 	numWeeks=2,
 	numLists=12,
 	accuracy=80
+	)
+
+@app.route("/dashboard/receipts")
+def dashboardReceipts():
+	if not current_user.is_authenticated:
+		return redirect(url_for("home"))
+	return render_template("dashboard/receipts.html", 
+	username=current_user.username, 
+	profilePic=url_for('static', filename='userPictures/' + str(current_user.id) + '.png')
 	)
 
 @app.route("/gettingstarted", methods=["GET","POST"])
