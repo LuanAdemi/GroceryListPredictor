@@ -26,7 +26,7 @@
 
 <div class="w3-hide-large" style="height: 100%">
     <div class="mobilewarning" style="height: 50%;background-position: center;background-repeat: no-repeat;background-size: contain;margin-left: 10%;margin-right: 10%"></div>
-    <h2 style="margin-left: 10%;margin-right: 10%;color: ">It seems that your display is to small to display this site correctly. <br>We are working on a mobile site, but until then, please use a computer or a tablet.</h2>
+    <h2 style="margin-left: 10%;margin-right: 10%;margin-top: 100px;">It seems that your display is to small to display this site correctly. <br>We are working on a mobile site, but until then, please use a computer or a tablet.</h2>
 
 </div>
 
@@ -228,6 +228,7 @@
         -webkit-transition: 0.5s;
         transition: 0.5s;
         outline: none;
+        background-color: white;
         
     }
 
@@ -241,10 +242,18 @@
         -webkit-transition: 0.5s;
         transition: 0.5s;
         outline: none;
+        background-color: white;
         
     }
 
     input[type="submit"]:hover {
+        border: 2px solid rgba(72, 102, 230, 1);
+        background-color: #4866E6;
+        color: white;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:focus {
         border: 2px solid rgba(72, 102, 230, 1);
         background-color: #4866E6;
         color: white;
