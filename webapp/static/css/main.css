@@ -50,3 +50,9 @@ a {
 .howitworks {
     background-image: url(../img/howitworks@2x.png);
 }
+
+.about {
+    background-image: url(../img/spacerLineAbout.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+}
