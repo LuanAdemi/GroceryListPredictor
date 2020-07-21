@@ -3,6 +3,8 @@ from webapp import app, db, bcrypt, login_manager
 from flask_login import login_user, current_user, logout_user, login_required
 from webapp.modules import User
 from webapp.forms import RegistrationForm, LoginForm
+from webapp.dashboard import Dashboard
+from flask import Markup
 
 import os.path
 
@@ -17,26 +19,30 @@ def home():
 def dashboardOverview():
 	if not current_user.is_authenticated:
 		return redirect(url_for("home"))
-
+	dash = Dashboard("Neonode")
 	profilePic = url_for('static', filename="userPictures/default.png")
 	if os.path.exists("webapp/static/userPictures/" + str(current_user.id) + '.png'):
 		profilePic=url_for('static', filename='userPictures/' + str(current_user.id) + '.png')
 	return render_template("dashboard/overview.html", 
 	username=current_user.username, 
 	profilePic=profilePic,
-	numReceipts=42,
-	numWeeks=2,
-	numLists=12,
-	accuracy=80
+	numReceipts=len(dash.receipts),
+	numWeeks=dash.weeks,
+	numLists=len(dash.lists),
+	accuracy=dash.accuracy
 	)
 
 @app.route("/dashboard/receipts")
 def dashboardReceipts():
 	if not current_user.is_authenticated:
 		return redirect(url_for("home"))
+	dash = Dashboard("Neonode")
+	receipts = dash.generateHTMLForReceipts()
 	return render_template("dashboard/receipts.html", 
 	username=current_user.username, 
-	profilePic=url_for('static', filename='userPictures/' + str(current_user.id) + '.png')
+	profilePic=url_for('static', filename='userPictures/' + str(current_user.id) + '.png'),
+	receipts=receipts,
+	latestUpdate=dash.latestUpdate
 	)
 
 @app.route("/gettingstarted", methods=["GET","POST"])
