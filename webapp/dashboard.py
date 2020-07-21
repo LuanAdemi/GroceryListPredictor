@@ -1,4 +1,8 @@
-from flask import Markup
+# a class for templating the dasboard dynamically
+
+from flask import Markup # import the Markup function which generates html from string
+
+####### The templating strings containing the html and css for the cells #######
 
 core = """<div style="width: 90%;height:100px;border-radius: 20px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);margin-left: 5%;margin-right: 5%;margin-top: 30px;display: flex;align-items: center;">
         <div class="w3-row" style="width: 100%;text-align: center;">
@@ -23,13 +27,19 @@ queued = """<img src="{image}" style="height: 40px;vertical-align: middle;">
 trained = """<img src="{image}" style="height: 40px;vertical-align: middle;">
               <h2 style="color: #4BD184;margin-left: 20px;">Trained</h2>""".format(image='../static/img/trained.svg')
 
+####### The templating strings containing the html and css for the cells #######
+
 class Dashboard:
     def __init__(self, user):
         super().__init__()
-        self.user = user
-        self.weeks = 2
-        self.latestUpdate = "2 weeks"
-        self.accuracy = 80
+
+        # NOTE: all these parameters need to be retrieved by a suitable database structure which has yet
+        #       to be implemented.
+
+        self.user = user # the flask user element 
+        self.weeks = 2 # the weeks passed since signup
+        self.latestUpdate = "2 weeks" # the weeks passed since the last model update
+        self.accuracy = 80 # the current model accuracy
 
         # this is an example showing the encoding of the receipts. This should be provided by the database.
         self.receipts = [
@@ -69,17 +79,22 @@ class Dashboard:
                 "url" : "NULL"
             },
         ]
+
         # TODO
         # this is an example showing the encoding of the list. This should also be provided by the database.
         self.lists = []
 
+    
+    # this function generates the html code for the receipts using the template strings
     def generateHTMLForReceipts(self):
-        html = ""
+        html = "" # the string containing our html code
         for receipt in self.receipts:
+            # get the status
             if receipt["status"] == "trained":
                 status = trained
             else:
                 status = queued
+            # add the receipt to the html string 
             html += core.format(status=status, date=receipt["date"], elements=receipt["elements"])
         return Markup(html)
     
