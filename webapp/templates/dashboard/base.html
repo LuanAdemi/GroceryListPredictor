@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Grocery List Predictor</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+	<html style="font-family: 'Roboto'; color: #3F3D56">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
+</head>
+<body>
+    <div style="height: 10%" class="w3-hide-large">
+        <img src="{{ url_for('static', filename='img/GLPLogo.png') }}" style="width: 25%;margin-top: 20px;margin-left: 20px">
+    </div>
+
+    <div class="w3-hide-large" style="height: 100%">
+        <div class="mobilewarning"></div>
+        <h2 class="mobilewarning-label">It seems that your display is to small to display this site correctly. <br>We are working on a mobile site, but until then, please use a computer or a tablet.</h2>
+    </div>
+    <div class="w3-hide-small w3-hide-medium">
+    <div class="w3-container">
+        <div class="w3-half">
+            <div class="profilePicture">
+            </div>
+            
+            <h2 class="name-label">👋 Hey <span style="color: #4866E6;">{{username}}</span>!</h2>
+        </div>
+            <div class="w3-half top-bar displayFlexCenter">
+                <ul class="top-bar-list">
+                    <li><a href="/dashboard/account" id="top-bar-settings">Account</a></li>
+                    <li><a href="#how" id="top-bar-lists">Lists</a></li>
+                    <li><a href="/dashboard/receipts" id="top-bar-receipts">Receipts</a></li>
+                    <li><a href="/dashboard/overview" id="top-bar-overview">Overview</a></li>
+                </ul>
+            </div>
+    </div>
+
+    {% block body %}{% endblock %}
+
+	</div>
+
+
+	<a class="w3-hide-medium w3-hide-small logOut" href="/logout"> <img src="{{ url_for('static', filename='img/logOut.svg') }}"></a>
+
+</body>
+<style>
+    .profilePicture {
+        background-image: url("{{profilePic}}");
+    }
+
+</style>
+
+<script>
+    href = window.location.href
+    account = document.getElementById("top-bar-settings")
+    list = document.getElementById("top-bar-lists")
+    receipts = document.getElementById("top-bar-receipts")
+    overview = document.getElementById("top-bar-overview")
+
+    if (href.includes("receipts") ) {
+        receipts.style.color = "#4866E6"
+    } else if (href.includes("overview") ) {
+        overview.style.color = "#4866E6"
+    } else if (href.includes("overview") ) {
+        overview.style.color = "#4866E6"
+    } else if (href.includes("lists") ) {
+        lists.style.color = "#4866E6"
+    } else if (href.includes("account") ) {
+        account.style.color = "#4866E6"
+    }
+</script>
+</html>

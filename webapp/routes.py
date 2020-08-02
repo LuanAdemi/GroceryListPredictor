@@ -28,7 +28,7 @@ def save_profile_picture(form_picture):
 	i.save(picture_path)
 	return picture_fn
 
-@app.route("/account", methods=["GET","POST"])
+@app.route("/dashboard/account", methods=["GET","POST"])
 @login_required
 def account():
 	form = UpdateAccountForm()
@@ -45,7 +45,7 @@ def account():
 		form.username.data = current_user.username
 		form.email.data = current_user.email
 	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
-	return render_template("account.html", image_file=image_file, form=form)
+	return render_template("dashboard/account.html", profilePic=image_file, form=form, username=current_user.username)
 
 
 # TODO: database link
@@ -54,12 +54,10 @@ def dashboardOverview():
 	if not current_user.is_authenticated:
 		return redirect(url_for("home"))
 	dash = Dashboard("Neonode")
-	profilePic = url_for('static', filename="userPictures/default.png")
-	if os.path.exists("webapp/static/userPictures/" + str(current_user.id) + '.png'):
-		profilePic=url_for('static', filename='userPictures/' + str(current_user.id) + '.png')
+	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
 	return render_template("dashboard/overview.html", 
 	username=current_user.username, 
-	profilePic=profilePic,
+	profilePic=image_file,
 	numReceipts=len(dash.receipts),
 	numWeeks=dash.weeks,
 	numLists=len(dash.lists),
@@ -71,10 +69,11 @@ def dashboardReceipts():
 	if not current_user.is_authenticated:
 		return redirect(url_for("home"))
 	dash = Dashboard("Neonode")
+	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
 	receipts = dash.generateHTMLForReceipts()
 	return render_template("dashboard/receipts.html", 
 	username=current_user.username, 
-	profilePic=url_for('static', filename='userPictures/' + str(current_user.id) + '.png'),
+	profilePic=image_file,
 	receipts=receipts,
 	latestUpdate=dash.latestUpdate
 	)
