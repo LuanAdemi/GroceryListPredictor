@@ -1,0 +1,30 @@
+
+{% extends "dashboard/base.html" %}
+{% block body %}
+
+<div style="width: 90%;height:100px;border-radius: 20px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);margin-left: 5%;margin-right: 5%;margin-top: 30px;display: flex;align-items: center;">
+    <div class="w3-row" style="width: 100%;text-align: center;">
+        <h2><a href="{{ url_for('create_list') }}">New List</a></h2>
+    </div>
+</div>
+
+{% for l in lists %}
+    <div style="width: 90%;height:100px;border-radius: 20px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);margin-left: 5%;margin-right: 5%;margin-top: 30px;display: flex;align-items: center;">
+        <div class="w3-row" style="width: 100%;text-align: center;">
+            <div class="w3-container w3-third" style="border-right: 1px solid rgba(128, 128, 128, 0.472);display: flex;align-items:center;justify-content: center;">
+                <h2><a href="{{ url_for('groceryList', listID=l.id) }}">{{l.name}}</a></h2>
+            </div>
+            <div class="w3-container w3-third" style="border-right: 1px solid rgba(128, 128, 128, 0.472);">
+                <h2><span>[Timestamp/Date]</span></h2>
+            </div>
+            <div class="w3-container w3-third" style="border-right: 1px solid rgba(128, 128, 128, 0.472);">
+                <h2><span>[Number_items]</span> items</h2>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endblock body %}
+
+
+
+

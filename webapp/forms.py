@@ -46,3 +46,9 @@ class UpdateAccountForm(FlaskForm):
 			user = User.query.filter_by(email=email.data).first()
 			if user:
 				raise ValidationError("email already registered")
+
+class GroceryListForm(FlaskForm):
+	name = StringField("List name", validators=[DataRequired()])
+	items = TextAreaField("Items to buy (comma separated)", validators=[DataRequired()])
+	submit = SubmitField("Create List")
+

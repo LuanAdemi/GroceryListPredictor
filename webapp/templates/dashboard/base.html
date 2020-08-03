@@ -29,10 +29,10 @@
         </div>
             <div class="w3-half top-bar displayFlexCenter">
                 <ul class="top-bar-list">
-                    <li><a href="/dashboard/account" id="top-bar-settings">Account</a></li>
-                    <li><a href="#how" id="top-bar-lists">Lists</a></li>
-                    <li><a href="/dashboard/receipts" id="top-bar-receipts">Receipts</a></li>
-                    <li><a href="/dashboard/overview" id="top-bar-overview">Overview</a></li>
+                    <li><a href="{{ url_for('account') }}" id="top-bar-settings">Account</a></li>
+                    <li><a href="{{ url_for('groceryLists') }}" id="top-bar-lists">Lists</a></li>
+                    <li><a href="{{ url_for('dashboardReceipts') }}" id="top-bar-receipts">Receipts</a></li>
+                    <li><a href="{{ url_for('dashboardOverview') }}" id="top-bar-overview">Overview</a></li>
                 </ul>
             </div>
     </div>

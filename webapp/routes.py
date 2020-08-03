@@ -1,8 +1,8 @@
 from flask import url_for, render_template, flash, redirect, request, make_response
 from webapp import app, db, bcrypt, login_manager
 from flask_login import login_user, current_user, logout_user, login_required
-from webapp.modules import User
-from webapp.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from webapp.modules import User, GroceryList
+from webapp.forms import RegistrationForm, LoginForm, UpdateAccountForm, GroceryListForm
 from webapp.dashboard import Dashboard
 from flask import Markup
 from PIL import Image, ImageOps
@@ -77,6 +77,46 @@ def dashboardReceipts():
 	receipts=receipts,
 	latestUpdate=dash.latestUpdate
 	)
+
+@app.route("/dashboard/lists")
+def groceryLists():
+	if not current_user.is_authenticated:
+		return redirect(url_for("home"))
+	lists = GroceryList.query.all()
+	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
+	return render_template("dashboard/grocery_lists.html", 
+	username=current_user.username, 
+	profilePic=image_file,
+	lists=lists)
+
+@app.route("/dashboard/list/<int:listID>")
+def groceryList(listID):
+	gr_list = GroceryList.query.filter_by(id=listID).first()
+	if not current_user.is_authenticated or current_user.id != gr_list.user_id:
+		return redirect(url_for("home"))
+	
+	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
+	return render_template("dashboard/view_list.html", 
+	username=current_user.username, 
+	profilePic=image_file,
+	gr_list=gr_list)
+
+@app.route("/dashboard/create_list", methods=["GET","POST"])
+def create_list():
+	if not current_user.is_authenticated:
+		return redirect(url_for("home"))
+	form = GroceryListForm()
+	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
+	if form.validate_on_submit():
+		gr_list = GroceryList(name=form.name.data, items=form.items.data, user=current_user)
+		db.session.add(gr_list)
+		db.session.commit()
+		return redirect(url_for("groceryLists"))
+	return render_template("dashboard/create_list.html", 
+	username=current_user.username, 
+	profilePic=image_file,
+	form=form)
+
 
 @app.route("/gettingstarted", methods=["GET","POST"])
 def gettingstarted():
