@@ -9,7 +9,7 @@ from PIL import Image, ImageOps
 import secrets
 
 import os.path
-
+grocery_list = []
 
 @app.route("/")
 @app.route("/home")
@@ -82,7 +82,7 @@ def dashboardReceipts():
 def groceryLists():
 	if not current_user.is_authenticated:
 		return redirect(url_for("home"))
-	lists = GroceryList.query.all()
+	lists = GroceryList.query.filter_by(user=current_user).all()
 	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
 	return render_template("dashboard/grocery_lists.html", 
 	username=current_user.username, 
@@ -102,29 +102,35 @@ def groceryList(listID):
 	gr_list=gr_list)
 
 @app.route("/dashboard/create_list", methods=["GET","POST"])
+@login_required
 def create_list():
-	"""if not current_user.is_authenticated:
-		return redirect(url_for("home"))
-	form = GroceryListForm()
-	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
-	if form.validate_on_submit():
-		gr_list = GroceryList(name=form.name.data, items=form.items.data, user=current_user)
-		db.session.add(gr_list)
-		db.session.commit()
-		return redirect(url_for("groceryLists"))
-	return render_template("dashboard/create_list.html", 
-	username=current_user.username, 
-	profilePic=image_file,
-	form=form)"""
 	filename = "C:/Users/Prog/Desktop/GroceryListPredictor/webapp/allproducts.txt"
 	with open(filename, "r") as file:
 		f = file.read()
 		products = f.split("\n")
 	image_file = url_for("static", filename="userPictures/" + current_user.image_file)
-	return render_template("dashboard/create_list.html",
+	if request.method == "POST":
+		if "create-list" in request.form:
+			s = grocery_list[0]
+			for i in range(1, len(grocery_list)):
+				s +=","+grocery_list[i]
+			gr_list = GroceryList(name=request.form["list-name"], user=current_user, items=s)
+			db.session.add(gr_list)
+			db.session.commit()
+			return redirect(url_for("groceryLists"))
+		for product in products:
+			if product in request.form:
+				grocery_list.append(product)
+				return redirect(url_for("create_list"))
+			if "Remove-"+product in request.form:
+				grocery_list.remove(product)
+				return redirect(url_for("create_list"))
+	else:
+		return render_template("dashboard/create_list.html",
 						   username=current_user.username,
 						   profilePic=image_file,
-						   products=products)
+						   products=products,
+						   grocery_list = grocery_list)
 
 
 @app.route("/gettingstarted", methods=["GET","POST"])

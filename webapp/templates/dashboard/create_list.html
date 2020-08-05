@@ -2,24 +2,47 @@
 {% block body %}
 <div class="row">
     <div class="col-6">
-
+        <div class="container">
+            <form method="POST" action="" enctype="multipart/form-data">
+                <h2>Grocery List Name</h2>
+                <input type="text" name="list-name">
+            </form>
+            <h2 style="margin-bottom:20px;">Your Grocery List</h2>
+            <form action="", method="post">
+              <ul class="list-group" id="myGroceryList">
+                {% for product in grocery_list %}
+                    <li class="list-group-item">{{product}}<input type="submit" name="Remove-{{product}}" value="Remove"></li>
+                {%endfor%}
+              </ul>
+            </form>
+        </div>
     </div>
     <div class="col-6">
         <div class="container">
-          <input class="form-control" id="listSearch" type="text" placeholder="Type something to search list items">
-          <br>
-          <ul class="list-group" id="myList">
-            {% for product in products %}
-                <li class="list-group-item">{{product}}</li>
-            {%endfor%}
+            <h2 style="margin-top:116px; margin-bottom:16px">Add items</h2>
+            <form action="", method="post">
+              <input class="form-control" id="listSearch" type="text" placeholder="Type something to search list items">
+              <br>
+              <ul class="list-group" id="myList">
+                {% for product in products %}
+                    <li class="list-group-item">{{product}} <input type="submit" name="{{product}}" value="Add item"></li>
+                {%endfor%}
           </ul>
+            </form>
         </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <form action="", method="post">
+        <input type="submit" name="create-list" value="Create list">
+        </form>
     </div>
 </div>
 
 <script>
 $(document).ready(function(){
-  console.log( "ready!" );
   $("#listSearch").on("keyup", function() {
     var value = $(this).val().toLowerCase();
     $("#myList li").filter(function() {
