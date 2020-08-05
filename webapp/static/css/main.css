@@ -21,6 +21,18 @@ ul {
     font-size: 1.1vw;
 
 }
+
+.list-group{
+    /**max-height: 150px !important;
+    overflow: auto;
+    overflow-y: scroll;*/
+    list-style:none;
+    max-height:400px;
+    margin:0;
+    overflow:auto;
+    padding:0;
+    text-indent:10px;
+}
 li {
   float: right;
 }

@@ -103,7 +103,7 @@ def groceryList(listID):
 
 @app.route("/dashboard/create_list", methods=["GET","POST"])
 def create_list():
-	if not current_user.is_authenticated:
+	"""if not current_user.is_authenticated:
 		return redirect(url_for("home"))
 	form = GroceryListForm()
 	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
@@ -115,7 +115,16 @@ def create_list():
 	return render_template("dashboard/create_list.html", 
 	username=current_user.username, 
 	profilePic=image_file,
-	form=form)
+	form=form)"""
+	filename = "C:/Users/Prog/Desktop/GroceryListPredictor/webapp/allproducts.txt"
+	with open(filename, "r") as file:
+		f = file.read()
+		products = f.split("\n")
+	image_file = url_for("static", filename="userPictures/" + current_user.image_file)
+	return render_template("dashboard/create_list.html",
+						   username=current_user.username,
+						   profilePic=image_file,
+						   products=products)
 
 
 @app.route("/gettingstarted", methods=["GET","POST"])
