@@ -49,6 +49,5 @@ class UpdateAccountForm(FlaskForm):
 
 class GroceryListForm(FlaskForm):
 	name = StringField("List name", validators=[DataRequired()])
-	items = TextAreaField("Items to buy (comma separated)", validators=[DataRequired()])
 	submit = SubmitField("Create List")
 

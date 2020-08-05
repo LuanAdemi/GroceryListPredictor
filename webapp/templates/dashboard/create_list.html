@@ -6,6 +6,14 @@
             <form method="POST" action="" enctype="multipart/form-data">
                 <h2>Grocery List Name</h2>
                 <input type="text" name="list-name">
+                <div class="row mt-4">
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <form action="", method="post">
+                        <input type="submit" name="create-list" value="Create list">
+                        </form>
+                    </div>
+                </div>
             </form>
             <h2 style="margin-bottom:20px;">Your Grocery List</h2>
             <form action="", method="post">
@@ -32,14 +40,7 @@
         </div>
     </div>
 </div>
-<div class="row mt-4">
-    <div class="col-4"></div>
-    <div class="col-4">
-        <form action="", method="post">
-        <input type="submit" name="create-list" value="Create list">
-        </form>
-    </div>
-</div>
+
 
 <script>
 $(document).ready(function(){

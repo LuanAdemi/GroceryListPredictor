@@ -7,8 +7,7 @@ from webapp.dashboard import Dashboard
 from flask import Markup
 from PIL import Image, ImageOps
 import secrets
-
-import os.path
+import os
 grocery_list = []
 
 @app.route("/")
@@ -104,7 +103,7 @@ def groceryList(listID):
 @app.route("/dashboard/create_list", methods=["GET","POST"])
 @login_required
 def create_list():
-	filename = "C:/Users/Prog/Desktop/GroceryListPredictor/webapp/allproducts.txt"
+	filename = os.getcwd() + "/webapp/" + "allproducts.txt"#may not work for windows
 	with open(filename, "r") as file:
 		f = file.read()
 		products = f.split("\n")
@@ -127,10 +126,10 @@ def create_list():
 				return redirect(url_for("create_list"))
 	else:
 		return render_template("dashboard/create_list.html",
-						   username=current_user.username,
-						   profilePic=image_file,
-						   products=products,
-						   grocery_list = grocery_list)
+			username=current_user.username,
+			profilePic=image_file,
+			products=products,
+			grocery_list = grocery_list)
 
 
 @app.route("/gettingstarted", methods=["GET","POST"])
