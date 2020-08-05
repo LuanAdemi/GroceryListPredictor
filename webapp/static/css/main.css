@@ -203,6 +203,26 @@ input[type="submit"] {
     
 }
 
+.greenSubmit {
+    border: 2px solid rgb(52, 226, 66) !important;
+    color: rgb(52, 226, 66) !important;
+}
+
+.greenSubmit:hover {
+    background-color: rgb(52, 226, 66) !important;
+    color: white !important;
+}
+
+.redSubmit {
+    border: 2px solid rgb(243, 76, 76) !important;
+    color: rgb(243, 76, 76) !important;
+}
+
+.redSubmit:hover {
+    background-color: rgb(243, 76, 76) !important;
+    color: white !important;
+}
+
 
 
 input[type="submit"]:hover {
