@@ -104,6 +104,7 @@ def groceryList(listID):
 @login_required
 def create_list():
 	filename = os.getcwd() + "/webapp/" + "allproducts.txt"#may not work for windows
+	
 	with open(filename, "r") as file:
 		f = file.read()
 		products = f.split("\n")
@@ -116,6 +117,7 @@ def create_list():
 			gr_list = GroceryList(name=request.form["list-name"], user=current_user, items=s)
 			db.session.add(gr_list)
 			db.session.commit()
+			del grocery_list[:] # empty the current grocerList Array
 			return redirect(url_for("groceryLists"))
 		for product in products:
 			if product in request.form:

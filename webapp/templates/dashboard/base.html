@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="height: 100%;">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"> <!--funtkioniert nicht-->
 	<title>Grocery List Predictor</title>
@@ -13,7 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </head>
-<body>
+<body style="height:100%">
     <div style="height: 10%" class="w3-hide-large">
         <img src="{{ url_for('static', filename='img/GLPLogo.png') }}" style="width: 25%;margin-top: 20px;margin-left: 20px">
     </div>
@@ -40,10 +40,10 @@
             </div>
     </div>
 
-    {% block body %}{% endblock %}
+    
 
 	</div>
-
+    {% block body %}{% endblock %}
 
 	<a class="w3-hide-medium w3-hide-small logOut" href="/logout"> <img src="{{ url_for('static', filename='img/logOut.svg') }}"></a>
 

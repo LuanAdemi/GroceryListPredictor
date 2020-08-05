@@ -1,44 +1,55 @@
 {% extends "dashboard/base.html" %}
 {% block body %}
-<div class="row">
-    <div class="col-6">
-        <div class="container">
-            <form method="POST" action="" enctype="multipart/form-data">
-                <h2>Grocery List Name</h2>
-                <input type="text" name="list-name">
-                <div class="row mt-4">
-                    <div class="col-4"></div>
-                    <div class="col-4">
-                        <form action="", method="post">
-                        <input type="submit" name="create-list" value="Create list">
-                        </form>
-                    </div>
+<div class="w3-row" style="height: 89%;">
+    <div class="w3-half w3-container empty-list" style="height: 90%;">
+      <div style="border-radius: 20px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);height: 100%;width: 100%;">
+        <form method="POST" action="" enctype="multipart/form-data" style="margin-right:10px; margin-left:10px;padding-top:20px;padding-bottom:20px">
+          <div class="w3-row">
+            <div class="w3-container w3-twothird">
+              <input type="text" placeholder="List name" style="height: 60px;font-size: 20px;" name="list-name">
+            </div>
+            <div class="w3-container w3-third">
+              <input type="submit" name="create-list" style="height: 60px;font-size: 20px;" value="Create list">
+            </div>
+          </div>
+      </form>
+      <form action="" method="post">
+        <ul class="list-group" id="myGroceryList" style="overflow: auto;">
+          {% for product in grocery_list %}
+              <li class="list-group-item">
+                <div class="w3-row" style="height: 100%;">
+                  <div class="w3-container w3-twothird">
+                    <h2 style="line-height: 50px;">{{product}}</h2>
+                  </div>
+                  <div class="w3-container w3-third">
+                    <input type="submit" name="Remove-{{product}}" value="Remove">
+                  </div>
                 </div>
-            </form>
-            <h2 style="margin-bottom:20px;">Your Grocery List</h2>
-            <form action="", method="post">
-              <ul class="list-group" id="myGroceryList">
-                {% for product in grocery_list %}
-                    <li class="list-group-item">{{product}}<input type="submit" name="Remove-{{product}}" value="Remove"></li>
+                
+                
+              
+              </li>
+          {%endfor%}
+        </ul>
+      </form>
+      </div>
+
+    </div>
+    <div class="w3-half w3-container" style="display: flex;align-items: center;justify-content: center;height: 80%;">
+          <div style="height: 100%;width: 100%;">
+            <form action="" method="post" style="height: 100%;">
+              <input style="height: 60px;font-size: 20px;" class="form-control" id="listSearch" type="text" placeholder="Type something to search list items">
+              <br>
+              
+              <ul id="myList" style="height: 100%;columns: 3;overflow: auto">
+                {% for product in products %}
+                    <li style="width: 100%;"><input type="submit" name="{{product}}" value="{{product}}"></li>
                 {%endfor%}
               </ul>
+
             </form>
         </div>
-    </div>
-    <div class="col-6">
-        <div class="container">
-            <h2 style="margin-top:116px; margin-bottom:16px">Add items</h2>
-            <form action="", method="post">
-              <input class="form-control" id="listSearch" type="text" placeholder="Type something to search list items">
-              <br>
-              <ul class="list-group" id="myList">
-                {% for product in products %}
-                    <li class="list-group-item">{{product}} <input type="submit" name="{{product}}" value="Add item"></li>
-                {%endfor%}
-          </ul>
-            </form>
-        </div>
-    </div>
+      </div>
 </div>
 
 
@@ -46,8 +57,8 @@
 $(document).ready(function(){
   $("#listSearch").on("keyup", function() {
     var value = $(this).val().toLowerCase();
-    $("#myList li").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    $("#myList li input").filter(function() {
+      $(this).toggle($(this).val().toLowerCase().indexOf(value) > -1)
     });
   });
 });
