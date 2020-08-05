@@ -12,7 +12,7 @@ class User(UserMixin, db.Model):
 	username = db.Column(db.String(20), unique=True, nullable=False)
 	email = db.Column(db.String(120), unique=True, nullable=False)
 	password = db.Column(db.String(60), nullable=False)
-	image_file = db.Column(db.String(200), nullable=False, default="default.jpg")
+	image_file = db.Column(db.String(200), nullable=False, default="default.png")
 	no_lists = db.Column(db.Integer, nullable=False, default=0)
 	created = db.relationship('GroceryList', backref='user')
 	def __repr__(self):

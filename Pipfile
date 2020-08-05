@@ -23,6 +23,7 @@ email-validator = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 dj-database-url = "*"
+whoosh = "*"
 
 [requires]
 python_version = "3.8"
