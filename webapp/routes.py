@@ -130,6 +130,12 @@ def create_list():
 			db.session.commit()
 			del grocery_list[:] # empty the current grocerList Array
 			return redirect(url_for("groceryLists"))
+		if "manual-adding" in request.form:
+			product = request.form["add-manually"]
+			with open(filename, "a") as file:
+				file.write("\n"+product)
+			grocery_list.append(product)
+			return redirect(url_for("create_list"))
 		for product in products:
 			if product in request.form:
 				grocery_list.append(product)
