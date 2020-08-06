@@ -89,7 +89,7 @@ def groceryLists():
 	profilePic=image_file,
 	lists=lists)
 
-@app.route("/dashboard/list/<int:listID>")
+@app.route("/dashboard/list/<int:listID>", methods=["GET","POST"])
 def groceryList(listID):
 	filename = os.getcwd() + "/webapp/" + "allproducts.txt"#may not work for windows
 	
