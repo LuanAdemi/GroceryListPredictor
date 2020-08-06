@@ -10,7 +10,7 @@
         <form method="POST" action="" enctype="multipart/form-data" style="margin-right:10px; margin-left:10px;padding-top:20px;padding-bottom:20px">
           <div class="w3-row">
             <div class="w3-container w3-twothird">
-              <input type="text" placeholder="List name" style="height: 60px;font-size: 20px;" name="list-name">
+              <input type="text" placeholder="List name" autocomplete="off" style="height: 60px;font-size: 20px;" name="list-name">
             </div>
             <div class="w3-container w3-third">
               <input class="greenSubmit" type="submit" name="create-list" style="height: 60px;font-size: 20px;" value="Create list">
@@ -51,7 +51,7 @@
     <div class="w3-half w3-container" style="display: flex;align-items: center;justify-content: center;height: 80%;">
         <div style="height: 100%;width: 100%;">
             <form action="" method="post" style="height: 66%;">
-              <input style="height: 60px;font-size: 20px;" class="form-control" id="listSearch" type="text" placeholder="Type something to search list items">
+              <input style="height: 60px;font-size: 20px;" autocomplete="off" class="form-control" id="listSearch" type="text" placeholder="Type something to search list items">
               <br>
               
               <ul id="myList" style="height: 100%;columns: 3;overflow: auto">
@@ -63,8 +63,8 @@
             </form>
             <h3 style="margin-top:130px;">Product not found? Add it manually:</h3>
             <form action="" method="post" style="height: 100%;">
-              <input style="height: 60px;font-size: 20px;" class="form-control" name="add-manually" type="text" placeholder="Add items manually">
-              <input type="submit" name="manual-adding" value="add item"></li>
+              <input style="height: 60px;font-size: 20px;" autocomplete="off" class="form-control" name="add-manually" type="text" placeholder="Add items manually">
+              <input type="submit" name="manual-adding" value="Add item"></li>
             </form>
         </div>
     </div>

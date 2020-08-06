@@ -6,7 +6,7 @@
             <form method="POST" action="" enctype="multipart/form-data" style="margin-right:10px; margin-left:10px;padding-top:20px;padding-bottom:20px">
             <div class="w3-row">
                 <div class="w3-container w3-twothird" style="margin-top: 12px;">
-                    <input type="text" placeholder="{{ gr_name }}" style="height: 60px;font-size: 20px;" name="list-name">
+                    <input type="text" autocomplete="off" placeholder="{{ gr_name }}" style="height: 60px;font-size: 20px;" name="list-name">
                 </div>
                 <div class="w3-container w3-third" style="margin-top: 12px;">
                   <input class="greenSubmit" type="submit" name="save-list" style="height: 60px;font-size: 20px;" value="Save list">
@@ -35,7 +35,7 @@
     <div class="w3-container w3-half" style="display: flex;align-items: center;justify-content: center;height: 80%;">
         <div style="height: 100%;width: 100%;">
             <form action="" method="post" style="height: 100%;">
-              <input style="height: 60px;font-size: 20px;" class="form-control" id="listSearch" type="text" placeholder="Type something to search list items">
+              <input style="height: 60px;font-size: 20px;" autocomplete="off" class="form-control" id="listSearch" type="text" placeholder="Type something to search list items">
               <br>
               
               <ul id="myList" style="height: 100%;columns: 3;overflow: auto">
@@ -48,5 +48,16 @@
         </div>
     </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $("#listSearch").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#myList li input").filter(function() {
+        $(this).toggle($(this).val().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+  </script>
 {% endblock body %}
 
