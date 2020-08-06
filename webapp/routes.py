@@ -90,7 +90,15 @@ def groceryLists():
 
 @app.route("/dashboard/list/<int:listID>")
 def groceryList(listID):
+	filename = os.getcwd() + "/webapp/" + "allproducts.txt"#may not work for windows
+	
+	with open(filename, "r") as file:
+		f = file.read()
+		products = f.split("\n")
 	gr_list = GroceryList.query.filter_by(id=listID).first()
+	items = gr_list.items.split(",")
+	name = gr_list.name
+	print(gr_list.items.split(","))
 	if not current_user.is_authenticated or current_user.id != gr_list.user_id:
 		return redirect(url_for("home"))
 	
@@ -98,7 +106,9 @@ def groceryList(listID):
 	return render_template("dashboard/view_list.html", 
 	username=current_user.username, 
 	profilePic=image_file,
-	gr_list=gr_list)
+	gr_name=name,
+	gr_items=items,
+	products=products)
 
 @app.route("/dashboard/create_list", methods=["GET","POST"])
 @login_required
