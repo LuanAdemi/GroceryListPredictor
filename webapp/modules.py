@@ -1,5 +1,6 @@
 from webapp import db, login_manager
 from flask_login import UserMixin
+from datetime import datetime
 
 
 @login_manager.user_loader
@@ -24,6 +25,8 @@ class GroceryList(db.Model):
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 	name = db.Column(db.String(120), nullable=False)
 	items = db.Column(db.Text, nullable=False)
+	num_items = db.Column(db.Integer, nullable=False)
+	timestamp = db.Column(db.DateTime, nullable=False, default=datetime.now())
 	def __repr__(self):
 		return f"GroceryList('{self.id}', '{self.name}')"
 

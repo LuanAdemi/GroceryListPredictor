@@ -15,10 +15,10 @@
                 <h2><a href="{{ url_for('groceryList', listID=l.id) }}">{{l.name}}</a></h2>
             </div>
             <div class="w3-container w3-third" style="border-right: 1px solid rgba(128, 128, 128, 0.472);">
-                <h2><span>[Timestamp/Date]</span></h2>
+                <h2><span>{{l.timestamp.date()}}</span></h2>
             </div>
             <div class="w3-container w3-third" style="border-right: 1px solid rgba(128, 128, 128, 0.472);">
-                <h2><span>[Number_items]</span> items</h2>
+                <h2><span>{{l.num_items}}</span> items</h2>
             </div>
         </div>
     </div>

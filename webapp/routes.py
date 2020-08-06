@@ -8,6 +8,7 @@ from flask import Markup
 from PIL import Image, ImageOps
 import secrets
 import os
+from datetime import datetime
 grocery_list = []
 
 @app.route("/")
@@ -114,7 +115,7 @@ def create_list():
 			s = grocery_list[0]
 			for i in range(1, len(grocery_list)):
 				s +=","+grocery_list[i]
-			gr_list = GroceryList(name=request.form["list-name"], user=current_user, items=s)
+			gr_list = GroceryList(name=request.form["list-name"], user=current_user, items=s, num_items=len(grocery_list), timestamp=datetime.now())
 			db.session.add(gr_list)
 			db.session.commit()
 			del grocery_list[:] # empty the current grocerList Array
