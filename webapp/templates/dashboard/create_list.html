@@ -1,5 +1,9 @@
 {% extends "dashboard/base.html" %}
 {% block body %}
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+  />
 <div class="w3-row" style="height: 89%;">
     <div class="w3-half w3-container empty-list" style="height: 90%;">
       <div style="border-radius: 20px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);height: 100%;width: 100%;">
@@ -15,7 +19,7 @@
       </form>
       <form action="" method="post">
         <ul class="list-group" id="myGroceryList" style="overflow: auto;">
-          {% for product in grocery_list %}
+          {% for product in grocery_list[:(grocery_list |length)-1] %}
               <li class="list-group-item">
                 <div class="w3-row" style="height: 100%;">
                   <div class="w3-container w3-twothird">
@@ -25,10 +29,19 @@
                     <input class="redSubmit" type="submit" name="Remove-{{product}}" value="Remove">
                   </div>
                 </div>
-                
-                
-              
               </li>
+          {%endfor%}
+          {% for product in grocery_list[((grocery_list |length)-1):] %}
+          <li class="list-group-item animate__animated animate__slideInLeft">
+            <div class="w3-row" style="height: 100%;">
+              <div class="w3-container w3-twothird">
+                <h2 style="line-height: 50px;">{{product}}</h2>
+              </div>
+              <div class="w3-container w3-third">
+                <input class="redSubmit" type="submit" name="Remove-{{product}}" value="Remove">
+              </div>
+            </div>
+          </li>
           {%endfor%}
         </ul>
       </form>

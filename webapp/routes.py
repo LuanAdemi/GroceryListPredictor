@@ -131,7 +131,8 @@ def create_list():
 			username=current_user.username,
 			profilePic=image_file,
 			products=products,
-			grocery_list = grocery_list)
+			grocery_list = grocery_list,
+			)
 
 
 @app.route("/gettingstarted", methods=["GET","POST"])
