@@ -91,15 +91,36 @@ def groceryLists():
 
 @app.route("/dashboard/list/<int:listID>", methods=["GET","POST"])
 def groceryList(listID):
+	global grocery_list
 	filename = os.getcwd() + "/webapp/" + "allproducts.txt"#may not work for windows
-	
 	with open(filename, "r") as file:
 		f = file.read()
 		products = f.split("\n")
 	gr_list = GroceryList.query.filter_by(id=listID).first()
 	items = gr_list.items.split(",")
+	if not grocery_list:
+		grocery_list = items
 	name = gr_list.name
-	print(gr_list.items.split(","))
+	if request.method == "POST":
+		if "save-list" in request.form:
+			s = grocery_list[0]
+			for i in range(1, len(grocery_list)):
+				s +=","+grocery_list[i]
+			gr_list.items = s
+			if request.form["list-name"]:
+				gr_list.name = request.form["list-name"]
+			gr_list.num_items = len(grocery_list)
+			gr_list.timestamp=datetime.now()
+			db.session.commit()
+			del grocery_list[:] # empty the current grocerList Array
+			return redirect(url_for("groceryLists"))
+		for product in products:
+			if product in request.form:
+				grocery_list.append(product)
+				return redirect(url_for("groceryList", listID=listID))
+			if "Remove-"+product in request.form:
+				grocery_list.remove(product)
+				return redirect(url_for("groceryList" , listID=listID))
 	if not current_user.is_authenticated or current_user.id != gr_list.user_id:
 		return redirect(url_for("home"))
 	
@@ -108,7 +129,7 @@ def groceryList(listID):
 	username=current_user.username, 
 	profilePic=image_file,
 	gr_name=name,
-	gr_items=items,
+	gr_items=grocery_list,
 	products=products)
 
 @app.route("/dashboard/create_list", methods=["GET","POST"])
