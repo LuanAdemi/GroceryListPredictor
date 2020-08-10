@@ -88,6 +88,7 @@ def dashboardReceipts():
 			rec = Receipt(image_file=receipt_file, user=current_user)
 			db.session.add(rec)
 			db.session.commit()
+		flash("Receipt(s) uploaded!", "success")
 	return render_template("dashboard/receipts.html", 
 	username=current_user.username, 
 	profilePic=image_file,

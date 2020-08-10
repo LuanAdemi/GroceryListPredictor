@@ -40,7 +40,13 @@
             </div>
     </div>
 
-    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" style="width: 90%;height:40px;margin-left: 5%;margin-right: 5%;margin-top: 30px;display: flex;align-items: center;">
+                <span>{{ message }}</span>
+            </div>
+        {% endfor %}
+    {% endwith %}
 
 	</div>
     {% block body %}{% endblock %}
