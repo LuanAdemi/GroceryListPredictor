@@ -16,6 +16,7 @@ class User(UserMixin, db.Model):
 	image_file = db.Column(db.String(200), nullable=False, default="default.png")
 	no_lists = db.Column(db.Integer, nullable=False, default=0)
 	created = db.relationship('GroceryList', backref='user')
+	uploaded_receipts = db.relationship('Receipt', backref='user')
 	def __repr__(self):
 		return f"User('{self.username}', '{self.email}', '{self.image_file})'"
 
@@ -30,3 +31,7 @@ class GroceryList(db.Model):
 	def __repr__(self):
 		return f"GroceryList('{self.id}', '{self.name}')"
 
+class Receipt(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	image_file = db.Column(db.String(200), nullable=False)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

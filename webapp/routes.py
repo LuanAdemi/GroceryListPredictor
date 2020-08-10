@@ -1,8 +1,8 @@
 from flask import url_for, render_template, flash, redirect, request, make_response
 from webapp import app, db, bcrypt, login_manager
 from flask_login import login_user, current_user, logout_user, login_required
-from webapp.modules import User, GroceryList
-from webapp.forms import RegistrationForm, LoginForm, UpdateAccountForm, GroceryListForm
+from webapp.modules import User, GroceryList, Receipt
+from webapp.forms import RegistrationForm, LoginForm, UpdateAccountForm, GroceryListForm, ReceiptUploadForm
 from webapp.dashboard import Dashboard
 from flask import Markup
 from PIL import Image, ImageOps
@@ -64,18 +64,36 @@ def dashboardOverview():
 	accuracy=dash.accuracy
 	)
 
-@app.route("/dashboard/receipts")
+def save_receipt(form_picture):
+	random_hex = secrets.token_hex(16)
+	_, f_ext = os.path.splitext(form_picture.filename)
+	picture_fn = random_hex + f_ext
+	picture_path = os.path.join(app.root_path, "static/receipt_images", picture_fn)
+	
+	i = Image.open(form_picture)
+	i.save(picture_path)
+	return picture_fn
+
+@app.route("/dashboard/receipts", methods=["GET","POST"])
 def dashboardReceipts():
-	if not current_user.is_authenticated:
+	if not current_user.is_authenticated:#should be done with @login_required (but it somehow does not work for account page)
 		return redirect(url_for("home"))
 	dash = Dashboard("Neonode")
 	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
 	receipts = dash.generateHTMLForReceipts()
+	form = ReceiptUploadForm()
+	if form.validate_on_submit():
+		for pic in form.receipt_images.data:
+			receipt_file = save_receipt(pic)
+			rec = Receipt(image_file=receipt_file, user=current_user)
+			db.session.add(rec)
+			db.session.commit()
 	return render_template("dashboard/receipts.html", 
 	username=current_user.username, 
 	profilePic=image_file,
 	receipts=receipts,
-	latestUpdate=dash.latestUpdate
+	latestUpdate=dash.latestUpdate,
+	form=form
 	)
 
 @app.route("/dashboard/lists")
