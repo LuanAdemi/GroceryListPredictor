@@ -22,7 +22,6 @@ class kmeans:
             data.shape[0]), :])
         if self.verbose:
             print("Searching for best starting centroids...")
-            print("[1] Setting centroid to", centroids[0])
         for c_id in range(k-1):
             dist = [] 
             for point in data: 
@@ -31,12 +30,14 @@ class kmeans:
                     temp_dist = self.distance(point, centroids[j]) 
                     d = min(d, temp_dist) 
                 dist.append(d) 
-                
+            
             dist = np.array(dist) 
             next_centroid = data[np.argmax(dist), :] 
             centroids.append(next_centroid)
+            
             if self.verbose:
-                print("[%d] Setting centroid to" % (c_id+2), centroids[c_id+1])
+                print("[%d] Setting centroid to" % (c_id+2), centroids[c_id+1], end="\r")
+                
             dist = [] 
         centroids = np.array(centroids)
         return centroids
