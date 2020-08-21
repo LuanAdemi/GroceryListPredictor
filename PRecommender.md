@@ -10,7 +10,7 @@ This sentence sort of shows what other solution we came up with. The solution go
 
 ### KNetworks
 
-![gif](scatter.gif)
+<img src="scatter.gif" style="float: right; margin-right:150px;margin-left:50px">
 
 With **KNetworks**, we found a way of training a network (or should I say *k* networks) to be able to perform this task even with the lack of userspecific data. 
 
