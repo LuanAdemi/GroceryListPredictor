@@ -1,14 +1,6 @@
 # The Model
 The model currently consists out of the following sub-models:
 
-## PClassifier
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/LuanAdemi/GroceryListPredictor/master?filepath=pclassifier%2FPClassifier.ipynb)
-
-This sub-model is capable of classifying a large amount of products just by their name. We used a bunch of shopping receipts to create a solid data basis for the training. The model consists of a simple, yet powerful NLP approach with RNN's, which enables the network to recognize certain word stems and making predictions based on the order of letters.
-
-Moreover, we plan on using a feedback system for expanding our dataset with (hopefully) every shopping trip. The user will be able to act as a critic and can correct the predictions of the classifier. Hence, the model will improve with the time and amount of users.
-
 ## RScanner
 
 (Binder link coming soon)
