@@ -7,6 +7,8 @@ from torch.utils.tensorboard import SummaryWriter
 
 import torch.multiprocessing as mp # this library uses multiprocesing, since we are going to train k networks
 
+from kmeans import kmeans
+
 # TODO: write the class in an extra module
 class KCN(nn.Module):
     def __init__(self, input_size, hidden_size, output_size):
@@ -32,36 +34,28 @@ class KCN(nn.Module):
     def initHidden(self):
         return torch.zeros(1, self.hidden_size)
     
-def knetworks():
-    def __init__(self, k, centroids, affiliations, vocabulary):
+class knetworks:
+    def __init__(self, k, data, optimize=False, verbose=False):
         super(knetworks, self).__init__()
         
-        self.k = k
-        self.centroids = centroids
-        self.vocabulary = vocabulary
-        self.vocabLen = len(vocabulary)
+        self.km = kmeans(k)
+        self.km.fit(data, max_iters=1, optimize=optimize, verbose=verbose)
+        self.k = self.km.k
+        self.centroids = self.km.centroids
+        
+        self.data = data
+        
+        self.D = self.km.calcDistances(self.centroids, data)
+        
+        self.W = np.minimum((1/self.D)**2, np.full(self.D.shape, 100))
+        
+        self.W = [self.W[i]/sum(self.W[i]) for i in range(self.k)]
+        self.W = np.array(self.W)
         
         self.networks = []
         
-        # create k network which later will be specialized on the data that is in the cluster
-        for i in range(self.k):
-            model = KCN(self.vocabLen, 512, self.vocabLen)
-            self.networks.append(model)
-        
-    def distance(self, p1, p2):
-        return np.sum((p1 - p2)**2) 
+    def sampleRandom(self, centroid):
+        return np.random.choice(np.array(range(len(self.data))),p=self.W[centroid])
     
-    def getNearestCentroid(self, point):
-        distances = []
-        for i in range(self.k):
-            distances.append(distance(point, centroid[i]))
-        
-        distances = np.array(distances)
-        return distances.argmin()
-    
-    def fit(self, data):
-        for input, output in data:
-            
-    def train(self, data):
-        mp = torch.multiprocessing.get_context('forkserver')
+
         
