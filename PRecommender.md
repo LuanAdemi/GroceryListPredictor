@@ -12,7 +12,7 @@ This sentence sort of shows what other solution we came up with. The solution go
 
 ### KNetworks
 
-<img src="scatter.gif" style="float: right; margin-right:150px;margin-left:50px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 15px;background-color: white;">
+<img src="scatter.gif" style="float: right;margin-left:50px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 15px;background-color: white;width:500px">
 
 With **KNetworks**, we found a way of training a network (or should I say *k* networks) to be able to perform this task even with the lack of userspecific data. 
 
@@ -22,7 +22,7 @@ The GIF to the right shows exactly this (Here, we are using a feature size of tw
 
 Next up, we initialize a LSTM network for each found centroid and start a weighted training on the whole dataset, where the representation of each data point is based on the euclidean distance from the centroid.
 
-This will create _k_ LSTM networks which are specialized on the data of the nearest data points (the users).
+This will create $k$ LSTM networks which are specialized on the data of the nearest data points (the users).
 
 This method proposes some key advantages, making it a good one to choose:
 
@@ -33,23 +33,70 @@ This method proposes some key advantages, making it a good one to choose:
 
 In order to get a prediction, we follow a similar approach as show in the training step. We retrieve the probability distributions from **every** network and use a weighted mean as our final prediction.
 
+But let's get a deeper look into how this algorithm works.
+
 <br><br>
 
 #### Training 
 
-We train *k* LSTM networks, which we will call *centroid networks* (**CN**), where *k* is simply the *k* used by the <a target="_blank" href="https://theory.stanford.edu/~sergei/papers/kMeansPP-soda.pdf">kmeans++</a> algorithm (we use the <a target="_blank" href="https://en.wikipedia.org/wiki/Elbow_method_(clustering)">ELBOW method</a> to optimize *k* by maximising the <a target="_blank" href="https://en.wikipedia.org/wiki/Silhouette_(clustering)">sillhouette score</a>) on the whole dataset with a **W**eighted **R**andom **S**ampler (<a target="_blank" href="https://utopia.duth.gr/~pefraimi/research/data/2007EncOfAlg.pdf">WRS</a>). 
+We train $k$ LSTM networks, which we will call *centroid networks* (**CN**), where $k$ is simply the $k$ used by the <a target="_blank" href="https://theory.stanford.edu/~sergei/papers/kMeansPP-soda.pdf">kmeans++</a> algorithm (we use the <a target="_blank" href="https://en.wikipedia.org/wiki/Elbow_method_(clustering)">ELBOW method</a> to optimize $k$ by maximising the <a target="_blank" href="https://en.wikipedia.org/wiki/Silhouette_(clustering)">sillhouette score</a>) on the whole dataset with a **W**eighted **R**andom **S**ampler (<a target="_blank" href="https://utopia.duth.gr/~pefraimi/research/data/2007EncOfAlg.pdf">WRS</a>). 
 
-Where the weight for every data point is determined by the normalized euclidean distance between the CN's centroid coordinates $p$ and the users point coordinates $q$:
+So let's start with a example dataset, to get a good understanding on how it's done exactly. Here, we have a dataset with 300 users and 2 features each. 
+
+We start by finding the cluster centers using kmeans++.
+
+<img src="dataset.png" style="float: right;margin-left:25px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 15px;background-color: white;width:500px;height:360px">
+
+
+```python
+centroids := empty array
+append a random n-tuple to centroids
+
+for c_id in range(k-1):
+    dist := empty array
+    for point in data:
+        d := infinity
+        for i in range(size of centroids):
+            temp_dist := distance(point, centroids[i])
+            d = min(d, temp_dist)
+        append d to dist
+    
+    next_centroid := data[argmin(dist), :]
+    append next_centroid to centroids
+```
+
+<img src="clustered.png" style="float: right;margin-left:25px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 15px;background-color: white;width:500px;height:360px">
+
+```python
+points := array with n-tuples
+epochs := number of epochs
+
+for epoch in range(epochs):
+    distances := calcDistances(centroids, points)
+    affiliations := argmin(distances)
+    centroids = mean of point n-tuples around the centroids
+```
+
+
+The above pseudocode shows how the kmeans++ algorithm works. After fitting it to our dataset, we will end up with $k$ clusters and the corresponding centroids.
+
+These $k$ centroids are initialized as $k$ CN's and will be trained by the WRS. In order to use the sampler, we need to defined weights for each user in the dataset and the centroids. 
+
+<img src="WRS.png" style="float: right;margin-left:25px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 15px;background-color: white;width:500px;height:360px">
+
+The weight for every data point is determined by the normalized euclidean distance between the CN's centroid coordinates $p$ and the users point coordinates $q$:
+
 
 <div style="display:flex;justify-content:center;margin-top:50px;margin-bottom:50px">
-$d = \sqrt{(\displaystyle\sum_{i=1}^n q_i + p_i)^2}$
+$d_i = \sqrt{(\displaystyle\sum_{i=1}^n q_i + p_i)^2}$
 </div>
 
-We create a distance vector $D$ defined by the distances of every user data point and normalize it using the softmax function to get the weight $w$ for every point:
+We create a distance vector $D$ defined by the distances of every user data point $d_i$ and normalize it using the following expression to get the weight $w$ for every point:
 
 <div style="display:flex;justify-content:center;margin-top:50px;margin-bottom:50px">
-$w_i = \displaystyle\frac{e^{D^i}}{\sum_{j=1}^n e^{D^j}}$
+$w_i = \displaystyle\frac{1}{\sum_{k=1}^n D_k}$
 </div>
+
 
 These weights are used to train the CN with a random user data pool batch choosen by the **WRS**.
 
@@ -78,7 +125,7 @@ This eliminates the drawback introduced in the Training section.
 
 <br><br>
 
-#### Pseudocode
+#### Pseudocode of the whole algorithm
 
 The following are some python flavored pseudocode representations of the KNetworks algortihm.
 
