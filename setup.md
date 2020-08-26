@@ -36,3 +36,7 @@ To start the webapp, enter the pipenv shell (if you haven't already) and simply 
 ```shell
 python run.py
 ```
+
+## Run the models
+
+Either use the binder links provided, to experiment with the models in the cloud or use jupyter to run the notebooks on your machine.

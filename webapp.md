@@ -1,4 +1,4 @@
-<img src="webapp.gif" style="float: right; margin-right:100px;margin-left:50px;width:500px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 10px">
+<img src="images/webapp.gif" style="float: right; margin-right:100px;margin-left:50px;width:500px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 10px">
 
 # The webapp
 

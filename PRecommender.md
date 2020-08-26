@@ -8,11 +8,9 @@ This model uses LSTM to perform a prediction based on the receipts collected in 
 
 This sentence sort of shows what other solution we came up with. The solution got the name **KNetworks**...
 
-<br><br>
-
 ### KNetworks
 
-<img src="scatter.gif" style="float: right;margin-left:50px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 15px;background-color: white;width:500px">
+<img src="images/scatter.gif" style="float: right;margin-left:50px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 15px;background-color: white;width:500px">
 
 With **KNetworks**, we found a way of training a network (or should I say *k* networks) to be able to perform this task even with the lack of userspecific data. 
 
@@ -35,7 +33,6 @@ In order to get a prediction, we follow a similar approach as show in the traini
 
 But let's get a deeper look into how this algorithm works.
 
-<br><br>
 
 #### Training 
 
@@ -45,7 +42,7 @@ So let's start with a example dataset, to get a good understanding on how it's d
 
 We start by finding the cluster centers using kmeans++.
 
-<img src="dataset.png" style="float: right;margin-left:25px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 15px;background-color: white;width:500px;height:360px">
+<img src="images/dataset.png" style="float: right;margin-left:25px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 15px;background-color: white;width:500px;height:360px">
 
 
 ```python
@@ -65,7 +62,7 @@ for c_id in range(k-1):
     append next_centroid to centroids
 ```
 
-<img src="clustered.png" style="float: right;margin-left:25px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 15px;background-color: white;width:500px;height:360px">
+<img src="images/clustered.png" style="float: right;margin-left:25px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 15px;background-color: white;width:500px;height:360px">
 
 ```python
 points := array with n-tuples
@@ -82,27 +79,34 @@ The above pseudocode shows how the kmeans++ algorithm works. After fitting it to
 
 These $k$ centroids are initialized as $k$ CN's and will be trained by the WRS. In order to use the sampler, we need to defined weights for each user in the dataset and the centroids. 
 
-<img src="WRS.png" style="float: right;margin-left:25px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 15px;background-color: white;width:500px;height:360px">
-
 The weight for every data point is determined by the normalized euclidean distance between the CN's centroid coordinates $p$ and the users point coordinates $q$:
 
 
+<div style="margin-right:550px">
 <div style="display:flex;justify-content:center;margin-top:50px;margin-bottom:50px">
 $d_i = \sqrt{(\displaystyle\sum_{i=1}^n q_i + p_i)^2}$
 </div>
 
-We create a distance vector $D$ defined by the distances of every user data point $d_i$ and normalize it using the following expression to get the weight $w$ for every point:
+We create a distance vector $D$ defined by the distances of every user data point $d_i$ and normalize it using the following expression to get the weight vector $W$:
 
 <div style="display:flex;justify-content:center;margin-top:50px;margin-bottom:50px">
-$w_i = \displaystyle\frac{1}{\sum_{k=1}^n D_k}$
+$W = \displaystyle min(\frac{1}{D²}, 50)$
 </div>
+</div>
+<img src="images/WRS.png" style="float: right;margin-left:25px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);border-radius: 15px;background-color: white;width:500px;height:360px">
 
+```python
+D := calculate the distances between centroids and data   
+W = min((1/D**2), 50)  
+W = [W[i]/sum(W[i]) for i in range(k)]
+```
 
 These weights are used to train the CN with a random user data pool batch choosen by the **WRS**.
 
-This training method leads to a specialization of the CNs on the user data pools that are fairly near to the cluster centers. Hence we have created a sort of "expert" network for each special set of users. This method has some drawbacks regarding generalization which will be tackled in the next section.
+This training method leads to a specialization of the CNs on the user data pools that are fairly near to the cluster centers. 
 
-<br><br>
+Hence we have created a sort of "expert" network for each special set of users. This method has some drawbacks regarding generalization which will be tackled in the next section.
+
 
 #### Predicting
 Getting predictions out of this special arrangement of CN's is fairly simple. 
