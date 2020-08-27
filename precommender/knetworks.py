@@ -3,7 +3,6 @@ import numpy as np
 from kmeans import kmeans
 
 import torch
-
 import torch.nn as nn
 
 
@@ -19,8 +18,6 @@ class LSTM(nn.Module):
         
         self.dropout = nn.Dropout(p=0.2)
         
-        self.sigmoid = nn.Sigmoid()
-
         self.hidden_cell = (torch.zeros(1,1,self.hidden_layer_size),
                             torch.zeros(1,1,self.hidden_layer_size))
 
@@ -53,7 +50,7 @@ class Network:
             inout_seq.append((train_seq ,train_label))
         return inout_seq
     
-    def train(self, tdata, epochs=500, verbose=False):
+    def train(self, tdata, epochs=600, verbose=False):
         self.trainingData = self.create_inout_sequences(torch.FloatTensor(tdata))
         
         for i in range(epochs):
@@ -85,7 +82,7 @@ class Network:
         return inputList[-future:]
 
 class knetworks:
-    def __init__(self, k, data, optimize=False, verbose=False):
+    def __init__(self, k, data, vocabSize, device=torch.device("cpu"), optimize=False, verbose=False):
         super(knetworks, self).__init__()
         
         self.km = kmeans(k)
@@ -103,6 +100,9 @@ class knetworks:
         self.W = np.array(self.W)
         
         self.networks = []
+        
+        for _ in range(k):
+            self.networks.append(Network(vocabSize, device=device))
         
         
     def sampleRandom(self, centroid):

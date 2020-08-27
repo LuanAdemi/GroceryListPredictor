@@ -4,11 +4,14 @@ import numpy as np
 import random
 import sys
 
+import concurrent.futures
+
 #   An implementation of the kmeans++ (https://theory.stanford.edu/~sergei/papers/kMeansPP-soda.pdf) algorithm with 
 #   k optimization using the elbow method.
+    
 
 class kmeans:
-    def __init__(self, k):
+    def __init__(self, k=2):
         super(kmeans, self).__init__()
         
         self.k = k
@@ -66,27 +69,31 @@ class kmeans:
             self.affiliations = affiliations
             
         else:
-            best = [[-1],[],[]]
-            for cK in range(self.k, self.k*3):
+            def run(cK):
                 centroids = self.initCentroids(cK, data)
 
                 for epoch in range(max_iters):
                     distances = self.calcDistances(centroids, data)
-
+            
                     affiliations = np.argmin(distances, axis=0)
-                    #print(affiliations)
 
                     centroids = np.array([data[affiliations==k].mean(axis=0) for k in range(centroids.shape[0])])
 
                 silscore = silhouette_score(data, affiliations)
-                if self.verbose:
+                if verbose:
                     print("[%d] Elbow'in... SilScore=%f" % (cK, silscore))
                 
-                if best[0] < silscore:
-                    best[0] = silscore
-                    best[1] = cK
-                    best[2] = centroids
+                return (silscore, cK, centroids, affiliations)
             
-            self.centroids = np.array(best[2])
-            self.k = best[1]
-            self.affiliations = affiliations
+            maxSilscore = 0
+
+            for cK in range(2, 20):
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    future = executor.submit(run, cK)
+                    return_value = future.result()
+                    silscore, K, centroids, aff = return_value
+                    
+                    if silscore > maxSilscore:
+                        self.centroids = centroids
+                        self.k = K
+                        self.affiliations = aff
