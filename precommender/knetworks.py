@@ -33,7 +33,7 @@ class LSTM(nn.Module):
         return predictions[-1]
     
 class Network:
-    def __init__(self, vocabSize, hidden_layer_size=1500, lr=0.0001, tw=6, device=torch.device("cpu")):
+    def __init__(self, vocabSize, hidden_layer_size=1500, lr=0.0001, tw=4, device=torch.device("cpu")):
         super().__init__()
         
         assert (tw != 0), "The training window has to be bigger than 0!"
@@ -119,7 +119,7 @@ class knetworks:
         return np.random.choice(np.array(range(len(self.data))),p=self.W[centroid])
     
     def train(self, samples, epochs):
-        print("We are going to train " + str(self.k) " networks for " + str(epochs) + " epochs with " str(samples) " samples each. This might take a while...")
+        print("We are going to train " + str(self.k) + " networks for " + str(epochs) + " epochs with " + str(samples) + " samples each. This might take a while...")
         for i in range(self.k):
             for s in range(samples):
                 print("[" + str(i) + "][ " + str(s) + "]")
