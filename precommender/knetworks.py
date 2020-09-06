@@ -33,7 +33,7 @@ class LSTM(nn.Module):
         return predictions[-1]
     
 class Network:
-    def __init__(self, vocabSize, hidden_layer_size=1500, lr=0.0001, tw=4, device=torch.device("cpu")):
+    def __init__(self, vocabSize, hidden_layer_size=1500, lr=0.0001, tw=5, device=torch.device("cpu")):
         super().__init__()
         
         assert (tw != 0), "The training window has to be bigger than 0!"
