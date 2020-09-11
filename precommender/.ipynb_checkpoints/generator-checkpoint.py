@@ -1,6 +1,5 @@
 import random
 import numpy as np
-import matplotlib.pyplot as plt
 
 def f(p_x, p_0, a_x, a_prev):
     if a_x == a_prev:
@@ -28,17 +27,22 @@ def generate(probs, prods):
             px = f(px,prob,data[j][i], data[j-1][i])
     return data, pxs
 
-prods = ["Banane","Apfel","Brot"]
-probs = [0.5,0.05,0.9]
-data, pxs = generate(probs,prods)
-f, (ax1, ax2, ax3) = plt.subplots(3,1)
-ax1.plot(data[:,0])
-ax2.plot(data[:,1])
-ax3.plot(data[:,2])
-ax1.plot(pxs[:,0])
-ax2.plot(pxs[:,1])
-ax3.plot(pxs[:,2])
+def generateFromGenFile(file):
+    file = open(file, "r") 
+    lines = file.readlines()
+    lines = np.array([lines[i].replace(" ", "").strip().upper().split(",") for i in range(len(lines))])
 
+    features = lines[:,0]
 
-f.show()
-   
+    num_features = len(features)
+
+    vectors = []
+    pxes = []
+
+    for user in range(1,6):
+        probs = lines[:,user]
+        data, pxs = generate(probs.astype(np.float),features)
+        pxes.append(pxs)
+        vectors.append(data)
+        
+    return features, vectors, pxes
