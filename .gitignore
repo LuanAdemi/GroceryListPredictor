@@ -2,7 +2,5 @@
 .idea
 *.log
 tmp/
-
-precommender/runs
-
+precommender/runs/
 site.db
