@@ -53,4 +53,4 @@ class GroceryListForm(FlaskForm):
 
 class ReceiptUploadForm(FlaskForm):
 	receipt_images = MultipleFileField("Upload receipts", validators=[DataRequired(), FileAllowed(["jpg","png"])])
-	submit = SubmitField("Submit")
+	submit = SubmitField("Upload Receipt(s)")
