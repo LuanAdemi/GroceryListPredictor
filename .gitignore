@@ -4,6 +4,6 @@
 .ipynb_checkpoints
 *.log
 tmp/
-precommender/runs/
-precommender/saves/
+webapp/precommender/runs/
+webapp/precommender/saves/
 site.db
