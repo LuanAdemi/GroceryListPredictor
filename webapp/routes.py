@@ -151,6 +151,24 @@ def groceryList(listID):
 	gr_items=grocery_list,
 	products=products)
 
+
+@app.route("/dashboard/generate_list", methods=["GET","POST"])
+@login_required
+def generate_list(): 
+	list_items = []
+	#TODO: generate grocery list with AI
+	s = list_items[0]
+	for i in range(1, len(list_items)):
+		s +=","+grocery_list[i]
+	gr_list = GroceryList(name=request.form["list-name"], user=current_user, items=s, num_items=len(grocery_list), timestamp=datetime.now())
+	db.session.add(gr_list)
+	db.session.commit()
+	flash("Generated grocery list successfully. Here is the result:", "success")
+	return redirect(url_for("groceryList" , listID=gr_list.listID))
+
+
+
+
 @app.route("/dashboard/create_list", methods=["GET","POST"])
 @login_required
 def create_list():
@@ -190,6 +208,7 @@ def create_list():
 			products=products,
 			grocery_list = grocery_list,
 			)
+
 
 
 @app.route("/gettingstarted", methods=["GET","POST"])
