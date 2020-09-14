@@ -1,2 +1,0 @@
-- convert the last svg image to png due to font problems
-- redesign the login and register forms
