@@ -157,6 +157,7 @@ def groceryList(listID):
 def generate_list(): 
 	list_items = []
 	#TODO: generate grocery list with AI
+
 	s = list_items[0]
 	for i in range(1, len(list_items)):
 		s +=","+grocery_list[i]
