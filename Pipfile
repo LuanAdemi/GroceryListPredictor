@@ -24,6 +24,7 @@ gunicorn = "*"
 psycopg2-binary = "*"
 dj-database-url = "*"
 whoosh = "*"
+numpy = "*"
 
 [requires]
 python_version = "3.8"

@@ -1,15 +1,21 @@
 from flask import url_for, render_template, flash, redirect, request, make_response
 from webapp import app, db, bcrypt, login_manager
 from flask_login import login_user, current_user, logout_user, login_required
-from webapp.modules import User, GroceryList, Receipt
+from webapp.modules import User, GroceryList, Receipt, UserReceipts
 from webapp.forms import RegistrationForm, LoginForm, UpdateAccountForm, GroceryListForm, ReceiptUploadForm
 from webapp.dashboard import Dashboard
 from flask import Markup
+import numpy as np
+from webapp.precommender.knetworks import knetworks
 from PIL import Image, ImageOps
 import secrets
 import os
 from datetime import datetime
 grocery_list = []
+
+knet = knetworks(2, [], 66)
+features = np.array(["BUTTER","ERDNUSSBUTTER","GUACAMOLE","HONIG","HUMMUS","LEBERWURST","MARMELADE","MARGARINE","NOUGATCREME","NUTELLA","SCHMALZ","SIRUP","STREICHKÄSE","BROT","KNÄCKEBROT","FISCH","STEAK","AUBERGINE","AVOCADO","BLUMENKOHL","BOHNEN","BROKKOLI","SALAT","GURKE","KARTOFFEL","KNOBLAUCH","SPINAT","TOMATE","TOMATENSOSSE","ZUCCHINI","ZWIEBELN","KAROTTE","MAIS","PAPRIKA","INGWER","SPARGEL","BIER","LIMONADE","WEIN","SENF","JOGHURT","KÄSE","QUARK","TASCHENTÜCHER","ZAHNPASTA","TOILETTENPAPIER","RASIERSCHAUM","SEIFE","SHAMPOO","NUDELN","REIS","ANANAS","APFEL","BANANE","ERDBEERE","BIRNE","APRIKOSE","DATTEL","WASSERMELONE","ORANGE","MANGO","PFIRSICH","PFLAUME","SALAMI","SCHINKEN","WÜRSTCHEN"])
+knet.load("webapp/precommender/saves")
 
 @app.route("/")
 @app.route("/home")
@@ -155,17 +161,22 @@ def groceryList(listID):
 @app.route("/dashboard/generate_list", methods=["GET","POST"])
 @login_required
 def generate_list(): 
-	list_items = []
+	global knet
 	#TODO: generate grocery list with AI
+	str = UserReceipts.query.filter(UserReceipts.user_id==current_user.id).first().data 
+	matrix = np.array([[int(y) for y in x.split(",")] for x in str.split("\n")])
 
+	prediction = np.squeeze(np.round(knet.predict(matrix)).astype(np.int))
+
+	list_items = features[prediction == 1]
 	s = list_items[0]
 	for i in range(1, len(list_items)):
-		s +=","+grocery_list[i]
-	gr_list = GroceryList(name=request.form["list-name"], user=current_user, items=s, num_items=len(grocery_list), timestamp=datetime.now())
+		s +=","+list_items[i]
+	gr_list = GroceryList(name="GenList1", user=current_user, items=s, num_items=len(list_items), timestamp=datetime.now())
 	db.session.add(gr_list)
 	db.session.commit()
 	flash("Generated grocery list successfully. Here is the result:", "success")
-	return redirect(url_for("groceryList" , listID=gr_list.listID))
+	return redirect(url_for("groceryList" , listID=gr_list.id))
 
 
 

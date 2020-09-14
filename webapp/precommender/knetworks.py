@@ -1,5 +1,5 @@
 import numpy as np
-from KNetworks.kmeans import kmeans
+from webapp.precommender.kmeans import kmeans
 import torch
 import torch.nn as nn
 import math
@@ -57,13 +57,14 @@ class Network:
             inout_seq.append((train_seq ,train_label))
         return inout_seq
     
-    # The train main loop 
+    # The train main loop (teacher forcing)
     def train(self, tdata, epochs=700, verbose=False):
         self.trainingData = self.create_inout_sequences(torch.FloatTensor(tdata), self.tw)
         
         assert (len(tdata[0]) == self.vocabSize), "The number of features of the input tensor doesn't match the defined vocabSize!"
         
-        writer = SummaryWriter()
+        if verbose:
+            writer = SummaryWriter()
         
         for i in range(epochs):
             for seq, labels in self.trainingData:
