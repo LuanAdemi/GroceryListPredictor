@@ -6,50 +6,78 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-	<html style="font-family: 'Roboto'; color: #3F3D56">
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+	<html style="font-family: 'Titillium Web'; color: #3F3D56">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}"/>
+    <script src="https://kit.fontawesome.com/e0a3cccccc.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </head>
-<body style="height:100%">
+
+<div class="sidebar" style="background-color:#4866E6; height: 100%;width: 12%;left:0;position:fixed;top:0">
+    <div style="height: 90px;background-color: #354baf;width: 100%;"></div>
+    <a href="{{ url_for('dashboardOverview') }}" id="top-bar-overview">
+    <div class="w3-container">
+        <div class="w3-col" style="width: 50px;display: flex;justify-content: center;">
+            <i class="fas fa-chart-pie" style="font-size:25px;text-align: center;"></i>
+        </div>
+        <div class="w3-rest">
+            <span style="margin-left: 20px;">Overview</span>
+        </div>
+    </div>
+    </a>
+    <a href="{{ url_for('dashboardReceipts') }}" id="top-bar-receipts">
+        <div class="w3-container">
+            <div class="w3-col" style="width: 50px;display: flex;justify-content: center;">
+                <i class="fas fa-receipt" style="font-size:25px;text-align: center;"></i>
+            </div>
+            <div class="w3-rest">
+                <span style="margin-left: 20px;">Receipt</span>
+            </div>
+        </div>    
+    </a>
+    <a href="{{ url_for('groceryLists') }}" id="top-bar-lists">
+        <div class="w3-container">
+            <div class="w3-col" style="width: 50px;display: flex;justify-content: center;">
+                <i class="fas fa-cart-plus" style="font-size:25px;text-align: center;"></i>
+            </div>
+            <div class="w3-rest">
+                <span style="margin-left: 20px;">Lists</span>
+            </div>
+        </div>   
+    </a>
+    <a href="{{ url_for('account') }}" id="top-bar-settings">
+        <div class="w3-container">
+            <div class="w3-col" style="width: 50px;display: flex;justify-content: center;">
+                <i class="fas fa-user" style="font-size:25px;text-align: center;"></i>
+            </div>
+            <div class="w3-rest">
+                <span style="margin-left: 20px;">Account</span>
+            </div>
+        </div>   
+    </a>
+</div>  
+
+<div class="w3-container" style="background-color: white;height: 90px;width:88%;box-shadow: 0px 10px 10px #00000011;position: fixed;top: 0;">
+    <div style="float: left;height:100%;display: flex;align-items: center;">
+        <input type="text" placeholder="Search.." style="width: 450px;margin-left: 10px;">
+    </div>
+    <div style="float: right;margin-right: 40px;">
+        <div class="profilePicture">
+        </div>
+        <h3 class="name-label">Hey, <span style="color: #4866E6;">{{username}}</span>!</h2>
+    </div>
+</div>
+
+
+<body style="margin-left:12%;height: calc(100% - 90px);width: 88%;background-color: #F9F9F9;margin-top: 90px;overflow: auto;">
+    
     <div style="height: 10%" class="w3-hide-large">
         <img src="{{ url_for('static', filename='img/GLPLogo.png') }}" style="width: 25%;margin-top: 20px;margin-left: 20px">
     </div>
-
-    <div class="w3-hide-large" style="height: 100%">
-        <div class="mobilewarning"></div>
-        <h2 class="mobilewarning-label">It seems that your display is to small to display this site correctly. <br>We are working on a mobile site, but until then, please use a computer or a tablet.</h2>
-    </div>
-    <div class="w3-hide-small w3-hide-medium">
-    <div class="w3-container">
-        <div class="w3-half">
-            <div class="profilePicture">
-            </div>
-            
-            <h2 class="name-label">👋 Hey <span style="color: #4866E6;">{{username}}</span>!</h2>
-        </div>
-            <div class="w3-half top-bar displayFlexCenter">
-                <ul class="top-bar-list">
-                    <li><a href="{{ url_for('account') }}" id="top-bar-settings">Account</a></li>
-                    <li><a href="{{ url_for('groceryLists') }}" id="top-bar-lists">Lists</a></li>
-                    <li><a href="{{ url_for('dashboardReceipts') }}" id="top-bar-receipts">Receipts</a></li>
-                    <li><a href="{{ url_for('dashboardOverview') }}" id="top-bar-overview">Overview</a></li>
-                </ul>
-            </div>
-    </div>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% for category, message in messages %}
-            <div class="alert alert-{{ category }}" style="width: 90%;height:40px;margin-left: 5%;margin-right: 5%;margin-top: 30px;display: flex;align-items: center;">
-                <span>{{ message }}</span>
-            </div>
-        {% endfor %}
-    {% endwith %}
-
-	</div>
     {% block body %}{% endblock %}
 
 	<a class="w3-hide-medium w3-hide-small logOut" href="/logout"> <img src="{{ url_for('static', filename='img/logOut.svg') }}"></a>
@@ -58,27 +86,45 @@
 <style>
     .profilePicture {
         background-image: url("{{profilePic}}");
+        width: 50px;
+        height: 50px;
+    }
+    .sidebar a {
+        padding: 40px 0px 6px 0px;
+        text-decoration: none;
+        font-size: 17px;
+        color: #ffffff;
+        display: block;
+    }
+    ::-webkit-scrollbar {
+        width: 7px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #4865e698;
     }
 
 </style>
 
 <script>
-    href = window.location.href
-    account = document.getElementById("top-bar-settings")
-    list = document.getElementById("top-bar-lists")
-    receipts = document.getElementById("top-bar-receipts")
-    overview = document.getElementById("top-bar-overview")
+    // href = window.location.href
+    // account = document.getElementById("top-bar-settings")
+    // list = document.getElementById("top-bar-lists")
+    // receipts = document.getElementById("top-bar-receipts")
+    // overview = document.getElementById("top-bar-overview")
 
-    if (href.includes("receipts") ) {
-        receipts.style.color = "#4866E6"
-    } else if (href.includes("overview") ) {
-        overview.style.color = "#4866E6"
-    } else if (href.includes("overview") ) {
-        overview.style.color = "#4866E6"
-    } else if (href.includes("lists") ) {
-        lists.style.color = "#4866E6"
-    } else if (href.includes("account") ) {
-        account.style.color = "#4866E6"
-    }
+    // if (href.includes("receipts") ) {
+    //     receipts.style.color = "#4866E6"
+    // } else if (href.includes("overview") ) {
+    //     overview.style.color = "#4866E6"
+    // } else if (href.includes("overview") ) {
+    //     overview.style.color = "#4866E6"
+    // } else if (href.includes("lists") ) {
+    //     lists.style.color = "#4866E6"
+    // } else if (href.includes("account") ) {
+    //     account.style.color = "#4866E6"
+    // }
 </script>
 </html>

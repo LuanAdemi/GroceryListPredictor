@@ -1,36 +1,48 @@
+{% extends "dashboard/base.html" %} {% block body %}
 
-{% extends "dashboard/base.html" %}
-{% block body %}
-
-<div style="width: 90%;height:100px;border-radius: 20px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);margin-left: 5%;margin-right: 5%;margin-top: 30px;display: flex;align-items: center;">
-    <div class="w3-row" style="width: 100%;text-align: center;">
-        <h2><a href="{{ url_for('generate_list') }}">Generate New List</a></h2>
-    </div>
+<div style="margin-top: 30px; margin-right: 5%; width: 100%; float: left">
+  <a
+    href="{{ url_for('generate_list') }}"
+    style="float: right; color: #4866e6; font-size: 25px; margin-right: 8%"
+  >
+    <i class="far fa-plus-square" style="margin-right: 20px"></i>Generate new
+    list</a
+  >
+  <a
+    href="{{ url_for('create_list') }}"
+    style="float: right; color: #4866e6; font-size: 25px"
+  >
+    <i class="far fa-plus-square" style="margin-right: 20px"></i>Add new list</a
+  >
 </div>
 
-<div style="width: 90%;height:100px;border-radius: 20px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);margin-left: 5%;margin-right: 5%;margin-top: 30px;display: flex;align-items: center;">
-    <div class="w3-row" style="width: 100%;text-align: center;">
-        <h2><a href="{{ url_for('create_list') }}">New List from Scratch</a></h2>
-    </div>
-</div>
+<div style="height: 50%; float: left; width: 6.5%"></div>
 
 {% for l in lists %}
-<div style="width: 90%;height:100px;border-radius: 20px;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);margin-left: 5%;margin-right: 5%;margin-top: 30px;display: flex;align-items: center;">
-    <div class="w3-row" style="width: 100%;text-align: center;height:100%;display: flex;align-items:center;">
-        <div class="w3-container w3-third" style="border-right: 1px solid rgba(128, 128, 128, 0.472);display: flex;align-items:center;justify-content: center;height:80%;">
-            <h2><a href="{{ url_for('groceryList', listID=l.id) }}">{{l.name}}</a></h2>
-        </div>
-        <div class="w3-container w3-third" style="border-right: 1px solid rgba(128, 128, 128, 0.472);display: flex;align-items:center;justify-content: center;height:80%">
-            <h2>{{l.timestamp.date()}}</h2>
-        </div>
-        <div class="w3-container w3-third" style="display: flex;align-items:center;justify-content: center;height:80%">
-            <h2><span>{{l.num_items}}</span> items</h2>
-        </div>
-    </div>
+<div
+    class = "animate__animated animate__zoomIn list"
+  style="
+    width: 15%;
+    height: 20%;
+    border-radius: 8px;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.103);
+    margin-left: 2%;
+    margin-top: 30px;
+    float: left;
+    background-color: white;
+    position: relative;
+    animation-delay: {{loop.index0 / 20}}s;
+  "
+>
+  <h4 style="color: #616060;margin-left: 15px;margin-top: 15px;">{{l.timestamp.date()}}</h4>
+  <h2 style="max-width:100%"><a href="{{ url_for('groceryList', listID=l.id) }}">{{l.name}}</a></h2>
+
+
+  <h4 style="position: absolute;bottom: 0;right: 0;margin-right: 15px;">{{l.num_items}} items</h4>
 </div>
-{% endfor %}
+
+{% endfor %} 
+
+
+
 {% endblock body %}
-
-
-
-

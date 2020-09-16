@@ -172,7 +172,7 @@ def generate_list():
 	s = list_items[0]
 	for i in range(1, len(list_items)):
 		s +=","+list_items[i]
-	gr_list = GroceryList(name="GenList1", user=current_user, items=s, num_items=len(list_items), timestamp=datetime.now())
+	gr_list = GroceryList(name="Unnamed List", user=current_user, items=s, num_items=len(list_items), timestamp=datetime.now())
 	db.session.add(gr_list)
 	db.session.commit()
 	flash("Generated grocery list successfully. Here is the result:", "success")
