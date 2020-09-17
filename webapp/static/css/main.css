@@ -155,7 +155,7 @@ fieldset {
 }
 input[type="text"] {
     border: 2px solid rgba(72, 102, 230, 0.5);
-    border-radius: 20px;
+    border-radius: 10px;
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -171,7 +171,7 @@ input[type=text]:focus {
 
 input[type="password"] {
     border: 2px solid rgba(72, 102, 230, 0.5);
-    border-radius: 20px;
+    border-radius: 8px;
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -189,9 +189,9 @@ label {
     color: #4866E6;
 }
 
-input[type="submit"] {
+.submitButton {
     border: 2px solid rgba(72, 102, 230, 1);
-    border-radius: 20px;
+    border-radius: 8px;
     padding: 12px 0px;
     margin: 8px 0;
     width: calc( 100% - 10px);
@@ -225,7 +225,14 @@ input[type="submit"] {
 
 
 
-input[type="submit"]:hover {
+.submitButton:hover {
+    border: 2px solid rgba(72, 102, 230, 1);
+    background-color: #4866E6;
+    color: white;
+    cursor: pointer;
+}
+
+.submitButton:focus {
     border: 2px solid rgba(72, 102, 230, 1);
     background-color: #4866E6;
     color: white;
@@ -233,10 +240,8 @@ input[type="submit"]:hover {
 }
 
 input[type="submit"]:focus {
-    border: 2px solid rgba(72, 102, 230, 1);
-    background-color: #4866E6;
-    color: white;
-    cursor: pointer;
+    border: none;
+    outline: none;
 }
 
 .password input {

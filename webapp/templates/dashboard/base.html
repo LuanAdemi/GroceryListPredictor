@@ -59,11 +59,21 @@
             </div>
         </div>   
     </a>
+    <a href="/logout" id="top-bar-settings" style="position: fixed;bottom: 0;margin-bottom: 15px;">
+        <div class="w3-container">
+            <div class="w3-col" style="width: 50px;display: flex;justify-content: center;">
+                <i class="fas fa-sign-out-alt" style="font-size:25px;text-align: center;"></i>
+            </div>
+            <div class="w3-rest">
+                <span style="margin-left: 20px;">Sign out</span>
+            </div>
+        </div>   
+    </a>
 </div>  
 
 <div class="w3-container" style="background-color: white;height: 90px;width:88%;box-shadow: 0px 10px 10px #00000011;position: fixed;top: 0;">
     <div style="float: left;height:100%;display: flex;align-items: center;">
-        <input type="text" placeholder="Search.." style="width: 450px;margin-left: 10px;">
+        <input type="text" placeholder="Search..." style="width: 450px;margin-left: 10px;">
     </div>
     <div style="float: right;margin-right: 40px;">
         <div class="profilePicture">
@@ -79,8 +89,6 @@
         <img src="{{ url_for('static', filename='img/GLPLogo.png') }}" style="width: 25%;margin-top: 20px;margin-left: 20px">
     </div>
     {% block body %}{% endblock %}
-
-	<a class="w3-hide-medium w3-hide-small logOut" href="/logout"> <img src="{{ url_for('static', filename='img/logOut.svg') }}"></a>
 
 </body>
 <style>

@@ -14,7 +14,7 @@ from datetime import datetime
 grocery_list = []
 
 knet = knetworks(2, [], 66)
-features = np.array(["BUTTER","ERDNUSSBUTTER","GUACAMOLE","HONIG","HUMMUS","LEBERWURST","MARMELADE","MARGARINE","NOUGATCREME","NUTELLA","SCHMALZ","SIRUP","STREICHKÄSE","BROT","KNÄCKEBROT","FISCH","STEAK","AUBERGINE","AVOCADO","BLUMENKOHL","BOHNEN","BROKKOLI","SALAT","GURKE","KARTOFFEL","KNOBLAUCH","SPINAT","TOMATE","TOMATENSOSSE","ZUCCHINI","ZWIEBELN","KAROTTE","MAIS","PAPRIKA","INGWER","SPARGEL","BIER","LIMONADE","WEIN","SENF","JOGHURT","KÄSE","QUARK","TASCHENTÜCHER","ZAHNPASTA","TOILETTENPAPIER","RASIERSCHAUM","SEIFE","SHAMPOO","NUDELN","REIS","ANANAS","APFEL","BANANE","ERDBEERE","BIRNE","APRIKOSE","DATTEL","WASSERMELONE","ORANGE","MANGO","PFIRSICH","PFLAUME","SALAMI","SCHINKEN","WÜRSTCHEN"])
+features = np.array(["Butter","Erdnussbutter","Guacamole","Honig","Hummus","Leberwurst","Marmelade","Margarine","Nougatcreme","Nutella","Schmalz","Sirup","Streichkäse","Brot","Knäckebrot","Fisch","Steak","Aubergine","Avocado","Blumenkohl","Bohnen","Brokkoli","Salat","Gurke","Kartoffel","Knoblauch","Spinat","Tomate","Tomatensoße","Zucchini","Zwiebeln","Karotte","Mais","Paprika","Ingwer","Spargel","Bier","Limonade","Wein","Senf","Joghurt","Käse","Quark","Taschentücher","Zahnpasta","Toilettenpapier","Rasierschaum","Seife","Shampoo","Nudeln","Reis","Ananas","Apfel","Banane","Erdbeere","Birne","Aprikose","Dattel","Wassermelone","Orange","Mango","Pfirsich","Pflaume","Salami","Schinken","Würstchen"])
 knet.load("webapp/precommender/saves")
 
 @app.route("/")
@@ -139,11 +139,12 @@ def groceryList(listID):
 			db.session.commit()
 			del grocery_list[:] # empty the current grocerList Array
 			return redirect(url_for("groceryLists"))
-		for product in products:
+		for product in np.unique(products + features.tolist()):
 			if product in request.form:
 				grocery_list.append(product)
 				return redirect(url_for("groceryList", listID=listID))
 			if "Remove-"+product in request.form:
+				print(grocery_list)
 				grocery_list.remove(product)
 				return redirect(url_for("groceryList" , listID=listID))
 	if not current_user.is_authenticated or current_user.id != gr_list.user_id:
@@ -176,6 +177,7 @@ def generate_list():
 	db.session.add(gr_list)
 	db.session.commit()
 	flash("Generated grocery list successfully. Here is the result:", "success")
+	del grocery_list[:]
 	return redirect(url_for("groceryList" , listID=gr_list.id))
 
 
