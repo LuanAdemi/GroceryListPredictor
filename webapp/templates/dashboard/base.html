@@ -14,11 +14,14 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}"/>
     <script src="https://kit.fontawesome.com/e0a3cccccc.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
 
 </head>
 
 <div class="sidebar" style="background-color:#4866E6; height: 100%;width: 12%;left:0;position:fixed;top:0">
-    <div style="height: 90px;background-color: #354baf;width: 100%;"></div>
+    <div style="height: 90px;background-color: #354baf;width: 100%;display: flex;align-items: center;justify-content: center;">
+        <h3 style="color: white;font-size: 20px;">GroceryListPredictor</h3>
+    </div>
     <a href="{{ url_for('dashboardOverview') }}" id="top-bar-overview">
     <div class="w3-container">
         <div class="w3-col" style="width: 50px;display: flex;justify-content: center;">
@@ -83,8 +86,7 @@
 </div>
 
 
-<body style="margin-left:12%;height: calc(100% - 90px);width: 88%;background-color: #F9F9F9;margin-top: 90px;overflow: auto;">
-    
+<body  style="margin-left:12%;height: calc(100% - 90px);width: 88%;background-color: #F9F9F9;margin-top: 90px;overflow: auto;">
     <div style="height: 10%" class="w3-hide-large">
         <img src="{{ url_for('static', filename='img/GLPLogo.png') }}" style="width: 25%;margin-top: 20px;margin-left: 20px">
     </div>
@@ -117,22 +119,10 @@
 </style>
 
 <script>
-    // href = window.location.href
-    // account = document.getElementById("top-bar-settings")
-    // list = document.getElementById("top-bar-lists")
-    // receipts = document.getElementById("top-bar-receipts")
-    // overview = document.getElementById("top-bar-overview")
-
-    // if (href.includes("receipts") ) {
-    //     receipts.style.color = "#4866E6"
-    // } else if (href.includes("overview") ) {
-    //     overview.style.color = "#4866E6"
-    // } else if (href.includes("overview") ) {
-    //     overview.style.color = "#4866E6"
-    // } else if (href.includes("lists") ) {
-    //     lists.style.color = "#4866E6"
-    // } else if (href.includes("account") ) {
-    //     account.style.color = "#4866E6"
+    // window.onload = function() {
+    // particlesJS.load('particles-js', "{{ url_for('static', filename='js/particlesjs-config.json') }}", function() {
+    //     console.log('callback - particles.js config loaded');
+    // });
     // }
 </script>
 </html>

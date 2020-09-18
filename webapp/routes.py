@@ -37,6 +37,7 @@ def save_profile_picture(form_picture):
 @app.route("/dashboard/account", methods=["GET","POST"])
 @login_required
 def account():
+	del grocery_list[:]
 	form = UpdateAccountForm()
 	if form.validate_on_submit():
 		if form.picture.data:
@@ -59,6 +60,7 @@ def account():
 def dashboardOverview():
 	if not current_user.is_authenticated:
 		return redirect(url_for("home"))
+	del grocery_list[:]
 	dash = Dashboard("Neonode")
 	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
 	return render_template("dashboard/overview.html", 
@@ -84,6 +86,7 @@ def save_receipt(form_picture):
 def dashboardReceipts():
 	if not current_user.is_authenticated:#should be done with @login_required (but it somehow does not work for account page)
 		return redirect(url_for("home"))
+	del grocery_list[:]
 	dash = Dashboard("Neonode")
 	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
 	receipts = dash.generateHTMLForReceipts()
@@ -107,6 +110,7 @@ def dashboardReceipts():
 def groceryLists():
 	if not current_user.is_authenticated:
 		return redirect(url_for("home"))
+	del grocery_list[:]
 	lists = GroceryList.query.filter_by(user=current_user).all()
 	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
 	return render_template("dashboard/grocery_lists.html", 
