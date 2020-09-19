@@ -1,11 +1,12 @@
 from flask import url_for, render_template, flash, redirect, request, make_response
 from webapp import app, db, bcrypt, login_manager
 from flask_login import login_user, current_user, logout_user, login_required
-from webapp.modules import User, GroceryList, Receipt, UserReceipts
+from webapp.modules import User, GroceryList
 from webapp.forms import RegistrationForm, LoginForm, UpdateAccountForm, GroceryListForm, ReceiptUploadForm
 from webapp.dashboard import Dashboard
 from flask import Markup
 import numpy as np
+from webapp.trainModel import knet
 from webapp.precommender.knetworks import knetworks
 from PIL import Image, ImageOps
 import secrets
@@ -13,9 +14,13 @@ import os
 from datetime import datetime
 grocery_list = []
 
-knet = knetworks(2, [], 66)
 features = np.array(["Butter","Erdnussbutter","Guacamole","Honig","Hummus","Leberwurst","Marmelade","Margarine","Nougatcreme","Nutella","Schmalz","Sirup","Streichkäse","Brot","Knäckebrot","Fisch","Steak","Aubergine","Avocado","Blumenkohl","Bohnen","Brokkoli","Salat","Gurke","Kartoffel","Knoblauch","Spinat","Tomate","Tomatensoße","Zucchini","Zwiebeln","Karotte","Mais","Paprika","Ingwer","Spargel","Bier","Limonade","Wein","Senf","Joghurt","Käse","Quark","Taschentücher","Zahnpasta","Toilettenpapier","Rasierschaum","Seife","Shampoo","Nudeln","Reis","Ananas","Apfel","Banane","Erdbeere","Birne","Aprikose","Dattel","Wassermelone","Orange","Mango","Pfirsich","Pflaume","Salami","Schinken","Würstchen"])
-knet.load("webapp/precommender/saves")
+filename = os.getcwd() + "/webapp/" + "allproducts.txt"#may not work for windows
+with open(filename, "r") as file:
+	f = file.read()
+	products = f.split("\n")
+
+#knet.load("webapp/precommender/saves")
 
 @app.route("/")
 @app.route("/home")
@@ -57,6 +62,7 @@ def account():
 
 # TODO: database link
 @app.route("/dashboard/overview")
+@app.route("/dashboard/")
 def dashboardOverview():
 	if not current_user.is_authenticated:
 		return redirect(url_for("home"))
@@ -82,29 +88,27 @@ def save_receipt(form_picture):
 	i.save(picture_path)
 	return picture_fn
 
-@app.route("/dashboard/receipts", methods=["GET","POST"])
-def dashboardReceipts():
-	if not current_user.is_authenticated:#should be done with @login_required (but it somehow does not work for account page)
-		return redirect(url_for("home"))
-	del grocery_list[:]
-	dash = Dashboard("Neonode")
-	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
-	receipts = dash.generateHTMLForReceipts()
-	form = ReceiptUploadForm()
-	if form.validate_on_submit():
-		for pic in form.receipt_images.data:
-			receipt_file = save_receipt(pic)
-			rec = Receipt(image_file=receipt_file, user=current_user)
-			db.session.add(rec)
-			db.session.commit()
-		flash("Receipt(s) uploaded!", "success")
-	return render_template("dashboard/receipts.html", 
-	username=current_user.username, 
-	profilePic=image_file,
-	receipts=receipts,
-	latestUpdate=dash.latestUpdate,
-	form=form
-	)
+# @app.route("/dashboard/receipts", methods=["GET","POST"])
+# def dashboardReceipts():
+# 	if not current_user.is_authenticated: #should be done with @login_required (but it somehow does not work for account page)
+# 		return redirect(url_for("home"))
+# 	del grocery_list[:]
+# 	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
+# 	#receipts = dash.generateHTMLForReceipts()
+# 	form = ReceiptUploadForm()
+# 	if form.validate_on_submit():
+# 		for pic in form.receipt_images.data:
+# 			receipt_file = save_receipt(pic)
+# 			rec = Receipt(image_file=receipt_file, user=current_user)
+# 			db.session.add(rec)
+# 			db.session.commit()
+# 		flash("Receipt(s) uploaded!", "success")
+# 	return render_template("dashboard/receipts.html", 
+# 	username=current_user.username,
+# 	profilePic=image_file,
+# 	form=form
+# 	)
+
 
 @app.route("/dashboard/lists")
 def groceryLists():
@@ -120,11 +124,8 @@ def groceryLists():
 
 @app.route("/dashboard/list/<int:listID>", methods=["GET","POST"])
 def groceryList(listID):
-	global grocery_list
-	filename = os.getcwd() + "/webapp/" + "allproducts.txt"#may not work for windows
-	with open(filename, "r") as file:
-		f = file.read()
-		products = f.split("\n")
+	global grocery_list, products
+	
 	gr_list = GroceryList.query.filter_by(id=listID).first()
 	items = gr_list.items.split(",")
 	if not grocery_list:
@@ -166,14 +167,17 @@ def groceryList(listID):
 @app.route("/dashboard/generate_list", methods=["GET","POST"])
 @login_required
 def generate_list(): 
-	global knet
+	global knet, products
 	#TODO: generate grocery list with AI
-	str = UserReceipts.query.filter(UserReceipts.user_id==current_user.id).first().data 
-	matrix = np.array([[int(y) for y in x.split(",")] for x in str.split("\n")])
-
-	prediction = np.squeeze(np.round(knet.predict(matrix)).astype(np.int))
-
-	list_items = features[prediction == 1]
+	data = [np.zeros(len(products), dtype=np.int) for gr_list in current_user.created]
+	gr_lists = [gr_list.items.split(',') for gr_list in current_user.created]
+	for j,y in enumerate(gr_lists):
+		for k,f in enumerate(products):
+			if f in y:
+				data[j][k] = 1
+	data = np.array(data)
+	prediction = np.squeeze(np.round(knet.predict(data)).astype(np.int))
+	list_items = np.array(products)[prediction == 1]
 	s = list_items[0]
 	for i in range(1, len(list_items)):
 		s +=","+list_items[i]
@@ -239,6 +243,7 @@ def gettingstarted():
 
 	if rform.validate_on_submit():
 		hashed_password = bcrypt.generate_password_hash(rform.password.data).decode("utf-8")
+		print(rform.password.data, type(rform.password.data))
 		user = User(username=rform.username.data, email=rform.email.data, password=hashed_password)
 		db.session.add(user)
 		db.session.commit()
