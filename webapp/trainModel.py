@@ -11,8 +11,8 @@ with open(filename, "r") as file:
 	f = file.read()
 	products = f.split("\n")
 
-data = [[gr_list.items.split(',') for gr_list in user.created] for user in User.query.all()]
-vectors = [[np.zeros(len(products), dtype=np.int) for gr_list in user.created] for user in User.query.all()]
+data = [[gr_list.items.split(',') for gr_list in user.created] for user in User.query.filter(User.created).all()]
+vectors = [np.array([np.zeros(len(products), dtype=np.int) for gr_list in user.created]) for user in User.query.all()]
 for i,x in enumerate(data):
     for j,y in enumerate(x):
         for k,f in enumerate(products):
@@ -20,8 +20,9 @@ for i,x in enumerate(data):
                 vectors[i][j][k] = 1
 
 vectors = np.array(vectors)
-knet = knetworks(2, vectors, len(products),device)
-knet.fit(7)
-#knet.train(50,10)
+#print(vectors)
+knet = knetworks(3, vectors, len(products),device)
+#knet.fit(5)
+#knet.train(60,10)
 #knet.save(os.getcwd() + "/webapp/precommender/" + "saves")
 knet.load(os.getcwd() + "/webapp/precommender/" + "saves")

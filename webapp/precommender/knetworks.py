@@ -31,7 +31,7 @@ class LSTM(nn.Module):
 
 # A wrapper class for the LSTM model implementing teacher enforce learning 
 class Network:
-    def __init__(self, vocabSize, hidden_layer_size=1500, lr=0.0001, tw=7, device=torch.device("cpu")):
+    def __init__(self, vocabSize, hidden_layer_size=1500, lr=0.0001, tw=4, device=torch.device("cpu")):
         super().__init__()
         
         assert (tw != 0), "The training window has to be bigger than 0!"
@@ -49,7 +49,7 @@ class Network:
         self.tw = tw
     
     # A class for creating the input tensors for the training with the defined training window
-    def create_inout_sequences(self, input_data, tw=6):
+    def create_inout_sequences(self, input_data, tw=4):
         inout_seq = []
         for i in range(len(input_data)-tw):
             train_seq = input_data[i:i+tw]
@@ -146,7 +146,9 @@ class knetworks:
         self.centroids = self.km.centroids
         
         self.D = self.km.calcDistances(self.centroids, means)
-        self.W = np.minimum((1/self.D**2), np.full(self.D.shape, 50))
+
+        self.W = np.minimum((1/(self.D+0.001)**2), np.full(self.D.shape, 50))
+
         self.W = np.array([self.W[i]/sum(self.W[i]) for i in range(self.k)])
     
     def save(self, filepath):
