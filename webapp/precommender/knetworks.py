@@ -4,6 +4,8 @@ import torch
 import torch.nn as nn
 import math
 
+from datetime import datetime, date, timedelta, time
+
 from torch.utils.tensorboard import SummaryWriter
 
 # The LSTM model for every centroid networks
@@ -106,7 +108,6 @@ class knetworks:
         
         self.D = []
         self.W = []
-        self.n = 7
         
         self.vocabSize = vocabSize
         
@@ -127,18 +128,17 @@ class knetworks:
                 self.networks[i].model.train()
                 self.networks[i].train(self.data[user], epochs=epochs)
     
-    def calcMean(self, data, n):
-        assert (n <= len(data)), "n > len(data) (needs to be n <= len(data))"
+    def calcMean(self, data):
+        n = len(data)
         mean = np.empty((len(data[0])))
         for i in range(len(data[0])):
             mean[i] = np.sum(data[:n,i])
         return mean/n
     
-    def fit(self, n, max_iters=1, optimize=False, verbose=False):
-        self.n = n
+    def fit(self, max_iters=1, optimize=False, verbose=False):
         means = []
         for user in self.data:
-            means.append(self.calcMean(user, self.n))
+            means.append(self.calcMean(user))
         means = np.array(means)
         
         self.km.fit(means, max_iters=max_iters, optimize=optimize, verbose=verbose)
@@ -162,6 +162,7 @@ class knetworks:
         np.savetxt(filepath + '/distances.csv', self.D, delimiter=',')
         # save the weights array
         np.savetxt(filepath + '/weights.csv', self.W, delimiter=',')
+
     
     def load(self, filepath):
         # load the model state_dicts
@@ -178,7 +179,7 @@ class knetworks:
         self.k = len(self.centroids)
     
     def predict(self, data, future=1):
-        mean = self.calcMean(data, self.n)
+        mean = self.calcMean(data)
         distances = self.km.calcDistances(self.centroids, mean)
         weights = np.minimum((1/distances**2), np.full(distances.shape, 50))
         weights = np.array([weights[i]/sum(weights) for i in range(self.k)])

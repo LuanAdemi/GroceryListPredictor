@@ -18,7 +18,6 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 import atexit
 
-
 def trainModel():
 	device = torch.device("cuda")
 
@@ -28,8 +27,12 @@ def trainModel():
 		products = f.split("\n")
 
 	data = [[gr_list.items.split(',') for gr_list in user.created] for user in User.query.filter(User.created).all()]
-	vectors = [np.array([np.zeros(len(products), dtype=np.int) for gr_list in user.created]) for user in User.query.all()]
+	vectors = [np.array([np.zeros(len(products), dtype=np.int) for gr_list in user.created]) for user in User.query.filter(User.created).all()]
 	for i,x in enumerate(data):
+		if len(x) <= 5:
+			del data[i]
+			del vectors[i]
+			continue
 		for j,y in enumerate(x):
 			for k,f in enumerate(products):
 				if f in y:
@@ -37,11 +40,11 @@ def trainModel():
 
 	vectors = np.array(vectors)
 	knet = knetworks(3, vectors, len(products),device)
-	knet.fit(5)
+	knet.fit()
 	knet.train(60,10)
 	knet.save(os.getcwd() + "/webapp/precommender/" + "saves")
 
-
+#trainModel()
 
 def loadModel():
 	device = torch.device("cuda")
@@ -52,7 +55,7 @@ def loadModel():
 		products = f.split("\n")
 
 	data = [[gr_list.items.split(',') for gr_list in user.created] for user in User.query.filter(User.created).all()]
-	vectors = [np.array([np.zeros(len(products), dtype=np.int) for gr_list in user.created]) for user in User.query.all()]
+	vectors = [np.array([np.zeros(len(products), dtype=np.int) for gr_list in user.created]) for user in User.query.filter(User.created).all()]
 	for i,x in enumerate(data):
 		for j,y in enumerate(x):
 			for k,f in enumerate(products):
@@ -63,7 +66,7 @@ def loadModel():
 	knet = knetworks(3, vectors, len(products),device)
 	knet.load(os.getcwd() + "/webapp/precommender/" + "saves")
 
-
+loadModel()
 
 train_scheduler = BackgroundScheduler()
 train_scheduler.start()
@@ -120,7 +123,6 @@ def account():
 
 # TODO: database link
 @app.route("/dashboard/overview")
-@app.route("/dashboard/")
 def dashboardOverview():
 	if not current_user.is_authenticated:
 		return redirect(url_for("home"))
@@ -167,7 +169,7 @@ def save_receipt(form_picture):
 # 	form=form
 # 	)
 
-
+@app.route("/dashboard/")
 @app.route("/dashboard/lists")
 def groceryLists():
 	if not current_user.is_authenticated:
@@ -229,6 +231,9 @@ def generate_list():
 	#TODO: generate grocery list with AI
 	data = [np.zeros(len(products), dtype=np.int) for gr_list in current_user.created]
 	gr_lists = [gr_list.items.split(',') for gr_list in current_user.created]
+	if len(gr_lists) < 5:
+		flash("You need to add at least five lists to make a prediction!", "danger")
+		return redirect(url_for("groceryLists"))
 	for j,y in enumerate(gr_lists):
 		for k,f in enumerate(products):
 			if f in y:
@@ -245,8 +250,6 @@ def generate_list():
 	flash("Generated grocery list successfully. Here is the result:", "success")
 	del grocery_list[:]
 	return redirect(url_for("groceryList" , listID=gr_list.id))
-
-
 
 
 @app.route("/dashboard/create_list", methods=["GET","POST"])
@@ -268,7 +271,7 @@ def create_list():
 			db.session.commit()
 			if len(train_scheduler.get_jobs()) < 1:
 				train_scheduler.add_job(func=trainModel, trigger="date", run_date=datetime.combine(date.today() + timedelta(days=1), time(0,0,0)))
-
+				print("Added a training job")
 			del grocery_list[:] # empty the current grocerList Array
 			return redirect(url_for("groceryLists"))
 		if "manual-adding" in request.form:
@@ -297,7 +300,7 @@ def create_list():
 @app.route("/gettingstarted", methods=["GET","POST"])
 def gettingstarted():
 	if current_user.is_authenticated:
-		return redirect(url_for("dashboardOverview"))
+		return redirect(url_for("groceryLists"))
 		
 	rform = RegistrationForm()
 	lform = LoginForm()
@@ -311,14 +314,14 @@ def gettingstarted():
 		flash(f"Account created for {rform.username.data}! You were logged in!", "success")
 		login_user(user)
 		next_page = request.args.get("next")
-		return redirect(next_page) if next_page else redirect(url_for("dashboardOverview"))
+		return redirect(next_page) if next_page else redirect(url_for("groceryLists"))
 
 	if lform.validate_on_submit():
 		user = User.query.filter_by(email=lform.email.data).first()
 		if user and bcrypt.check_password_hash(user.password, lform.password.data):
 			login_user(user)
 			next_page = request.args.get("next")
-			return redirect(next_page) if next_page else redirect(url_for("dashboardOverview"))
+			return redirect(next_page) if next_page else redirect(url_for("groceryLists"))
 		else:
 			flash("Login unsuccessful. Please check username and password", "danger")
 	

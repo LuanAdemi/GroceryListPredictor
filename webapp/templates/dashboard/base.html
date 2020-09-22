@@ -21,7 +21,7 @@
     <div style="height: 90px;background-color: #354baf;width: 100%;display: flex;align-items: center;justify-content: center;">
         <h3 style="color: white;font-size: 20px;">GroceryListPredictor</h3>
     </div>
-    <a href="{{ url_for('dashboardOverview') }}" id="top-bar-overview">
+    <!-- <a href="{{ url_for('dashboardOverview') }}" id="top-bar-overview">
     <div class="w3-container">
         <div class="w3-col" style="width: 50px;display: flex;justify-content: center;">
             <i class="fas fa-chart-pie" style="font-size:25px;text-align: center;"></i>
@@ -30,7 +30,7 @@
             <span style="margin-left: 20px;">Overview</span>
         </div>
     </div>
-    </a>
+    </a> -->
     <a href="{{ url_for('groceryLists') }}" id="top-bar-lists">
         <div class="w3-container">
             <div class="w3-col" style="width: 50px;display: flex;justify-content: center;">
@@ -64,10 +64,7 @@
 </div>  
 
 <div class="w3-container" style="background-color: white;height: 90px;width:88%;box-shadow: 0px 10px 10px #00000011;position: fixed;top: 0;">
-    <div style="float: left;height:100%;display: flex;align-items: center;">
-        <input type="text" placeholder="Search..." style="width: 450px;margin-left: 10px;">
-    </div>
-    <div style="float: right;margin-right: 40px;">
+    <div style="float: left;margin-right: 40px;">
         <div class="profilePicture">
         </div>
         <h3 class="name-label">Hey, <span style="color: #4866E6;">{{username}}</span>!</h2>
@@ -76,6 +73,14 @@
 
 
 <body  style="margin-left:12%;height: calc(100% - 90px);width: 88%;background-color: #F9F9F9;margin-top: 90px;overflow: auto;">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" style="position:fixed;width: 30%;height:40px;margin-left: 1.5%;margin-right: 5%;margin-top: 30px;display: flex;align-items: center;">
+                <span>{{ message }}</span>
+            </div>
+        {% endfor %}
+    {% endwith %}
     <div style="height: 10%" class="w3-hide-large">
         <img src="{{ url_for('static', filename='img/GLPLogo.png') }}" style="width: 25%;margin-top: 20px;margin-left: 20px">
     </div>
@@ -107,11 +112,4 @@
 
 </style>
 
-<script>
-    // window.onload = function() {
-    // particlesJS.load('particles-js', "{{ url_for('static', filename='js/particlesjs-config.json') }}", function() {
-    //     console.log('callback - particles.js config loaded');
-    // });
-    // }
-</script>
 </html>

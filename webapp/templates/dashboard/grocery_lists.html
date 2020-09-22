@@ -16,7 +16,7 @@
   >
 </div>
 
-<div style="height: 100%;float: left; margin-left: 7%;width: 88%;">
+<div style="height: calc(100% - 100px);float: left; margin-left: 7%;width: 88%;">
 
 {% for l in lists %}
 <div
@@ -36,7 +36,7 @@
   "
 >
   <h4 style="color: #616060;margin-left: 15px;margin-top: 15px;">{{l.timestamp.date()}}</h4>
-  <h2 style="max-width:100%"><a href="{{ url_for('groceryList', listID=l.id) }}">{{l.name}}</a></h2>
+  <h2 style="max-width:100%; font-size: 1.4vw;"><a href="{{ url_for('groceryList', listID=l.id) }}">{{l.name}}</a></h2>
 
 
   <h4 style="position: absolute;bottom: 0;right: 0;margin-right: 15px;">{{l.num_items}} items</h4>
