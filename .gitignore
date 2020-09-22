@@ -5,5 +5,3 @@
 *.log
 tmp/
 webapp/precommender/runs/
-webapp/precommender/saves/
-site.db
