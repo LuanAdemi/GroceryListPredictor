@@ -92,6 +92,7 @@ Gabel
 Geflügelfleisch
 Gelbe Beete
 Gemüse
+Geschenkkarte
 Gewürznelke
 Gewürzstreuer
 Glutenfreies Brot
@@ -102,6 +103,7 @@ Guacamole
 Gummibärchen
 Gurke
 Haferdrink
+Handtücher
 Hartkekse
 Hasenfleisch
 Hautcreme
@@ -165,6 +167,7 @@ Limonade
 Litschi
 Lorbeer
 Lotion
+Luftreiniger
 Lutscher
 Löffel
 Mairübe
@@ -312,6 +315,7 @@ Thymian
 Tiefkühlpizza
 Toastbrot
 Toilettenpapier
+Toilettenreiniger
 Tomate
 Tomate
 Topinambur
