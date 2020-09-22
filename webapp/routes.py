@@ -11,7 +11,65 @@ from webapp.precommender.knetworks import knetworks
 from PIL import Image, ImageOps
 import secrets
 import os
-from datetime import datetime
+import torch
+from datetime import datetime, date, timedelta, time
+
+from apscheduler.schedulers.background import BackgroundScheduler
+
+import atexit
+
+
+def trainModel():
+	device = torch.device("cuda")
+
+	filename = os.getcwd() + "/webapp/" + "allproducts.txt" #may not work for windows
+	with open(filename, "r") as file:
+		f = file.read()
+		products = f.split("\n")
+
+	data = [[gr_list.items.split(',') for gr_list in user.created] for user in User.query.filter(User.created).all()]
+	vectors = [np.array([np.zeros(len(products), dtype=np.int) for gr_list in user.created]) for user in User.query.all()]
+	for i,x in enumerate(data):
+		for j,y in enumerate(x):
+			for k,f in enumerate(products):
+				if f in y:
+					vectors[i][j][k] = 1
+
+	vectors = np.array(vectors)
+	knet = knetworks(3, vectors, len(products),device)
+	knet.fit(5)
+	knet.train(60,10)
+	knet.save(os.getcwd() + "/webapp/precommender/" + "saves")
+
+
+
+def loadModel():
+	device = torch.device("cuda")
+
+	filename = os.getcwd() + "/webapp/" + "allproducts.txt" #may not work for windows
+	with open(filename, "r") as file:
+		f = file.read()
+		products = f.split("\n")
+
+	data = [[gr_list.items.split(',') for gr_list in user.created] for user in User.query.filter(User.created).all()]
+	vectors = [np.array([np.zeros(len(products), dtype=np.int) for gr_list in user.created]) for user in User.query.all()]
+	for i,x in enumerate(data):
+		for j,y in enumerate(x):
+			for k,f in enumerate(products):
+				if f in y:
+					vectors[i][j][k] = 1
+
+	vectors = np.array(vectors)
+	knet = knetworks(3, vectors, len(products),device)
+	knet.load(os.getcwd() + "/webapp/precommender/" + "saves")
+
+
+
+train_scheduler = BackgroundScheduler()
+train_scheduler.start()
+atexit.register(lambda: train_scheduler.shutdown())
+
+
 grocery_list = []
 
 features = np.array(["Butter","Erdnussbutter","Guacamole","Honig","Hummus","Leberwurst","Marmelade","Margarine","Nougatcreme","Nutella","Schmalz","Sirup","Streichkäse","Brot","Knäckebrot","Fisch","Steak","Aubergine","Avocado","Blumenkohl","Bohnen","Brokkoli","Salat","Gurke","Kartoffel","Knoblauch","Spinat","Tomate","Tomatensoße","Zucchini","Zwiebeln","Karotte","Mais","Paprika","Ingwer","Spargel","Bier","Limonade","Wein","Senf","Joghurt","Käse","Quark","Taschentücher","Zahnpasta","Toilettenpapier","Rasierschaum","Seife","Shampoo","Nudeln","Reis","Ananas","Apfel","Banane","Erdbeere","Birne","Aprikose","Dattel","Wassermelone","Orange","Mango","Pfirsich","Pflaume","Salami","Schinken","Würstchen"])
@@ -208,6 +266,9 @@ def create_list():
 			gr_list = GroceryList(name=request.form["list-name"], user=current_user, items=s, num_items=len(grocery_list), timestamp=datetime.now())
 			db.session.add(gr_list)
 			db.session.commit()
+			if len(train_scheduler.get_jobs()) <= 1:
+				train_scheduler.add_job(func=trainModel, trigger="date", run_date=datetime.combine(date.today() + timedelta(days=1), time(0,0,0)))
+
 			del grocery_list[:] # empty the current grocerList Array
 			return redirect(url_for("groceryLists"))
 		if "manual-adding" in request.form:
