@@ -25,6 +25,9 @@ psycopg2-binary = "*"
 dj-database-url = "*"
 whoosh = "*"
 numpy = "*"
+sklearn = "*"
+torch = "*"
+tensorboard = "*"
 
 [requires]
 python_version = "3.8"
