@@ -331,3 +331,22 @@ Erdnussflips
 Stapelchips
 Pistazien
 Popcorn
+Hundefutter
+Katzenfutter
+Napf
+Teller
+Gabel
+Löffel
+Essmesser
+Küchenmesser
+Gewürzstreuer
+Servietten
+Zitronensaftkonzentrat
+Waschmittel
+Weichspüler
+Feuchtes Toilettenpapier
+Spültabs
+Slip
+Haferdrink
+Agavendicksaft
+Bratwurst
