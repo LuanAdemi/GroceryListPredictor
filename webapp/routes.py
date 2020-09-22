@@ -266,7 +266,7 @@ def create_list():
 			gr_list = GroceryList(name=request.form["list-name"], user=current_user, items=s, num_items=len(grocery_list), timestamp=datetime.now())
 			db.session.add(gr_list)
 			db.session.commit()
-			if len(train_scheduler.get_jobs()) <= 1:
+			if len(train_scheduler.get_jobs()) < 1:
 				train_scheduler.add_job(func=trainModel, trigger="date", run_date=datetime.combine(date.today() + timedelta(days=1), time(0,0,0)))
 
 			del grocery_list[:] # empty the current grocerList Array
