@@ -1,5 +1,5 @@
 from flask import url_for, render_template, flash, redirect, request, make_response
-from webapp import app, db, bcrypt, login_manager
+from webapp import app, db, bcrypt, login_manager, train_on
 from flask_login import login_user, current_user, logout_user, login_required
 from webapp.modules import User, GroceryList
 from webapp.forms import RegistrationForm, LoginForm, UpdateAccountForm, GroceryListForm, ReceiptUploadForm
@@ -19,7 +19,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 
 def trainModel():
-	device = torch.device("cuda")
+	device = torch.device(train_on)
 
 	filename = os.getcwd() + "/webapp/" + "allproducts.txt" #may not work for windows
 	with open(filename, "r") as file:
@@ -47,7 +47,7 @@ def trainModel():
 #trainModel()
 
 def loadModel():
-	device = torch.device("cuda")
+	device = torch.device(train_on)
 
 	filename = os.getcwd() + "/webapp/" + "allproducts.txt" #may not work for windows
 	with open(filename, "r") as file:
