@@ -3,8 +3,9 @@ from webapp.precommender.knetworks import knetworks
 import numpy as np
 import os
 import torch
+from webapp import train_on
 
-device = torch.device("cuda")
+device = torch.device(train_on)
 
 filename = os.getcwd() + "/webapp/" + "allproducts.txt" #may not work for windows
 with open(filename, "r") as file:
