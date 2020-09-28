@@ -42,12 +42,11 @@ Champagner
 Champignon
 Chicoree
 Chili
-Chili
 Chips
 Ciabatta
 Clementine
 Clotted Cream
-Coca Cola
+Cola
 Cranberries
 Crème double
 Crème fraîche
@@ -64,6 +63,7 @@ Eichblattsalat
 Eis
 Eisbergsalat
 Endivie
+Energy Drink
 Erbsenschoten
 Erdbeere
 Erdbeersaft
@@ -91,6 +91,7 @@ Geflügelfleisch
 Gelbe Beete
 Gemüse
 Geschenkkarte
+Getränke
 Gewürznelke
 Gewürzstreuer
 Glutenfreies Brot
@@ -101,7 +102,8 @@ Guacamole
 Gummibärchen
 Gurke
 Haferdrink
-HandtücherHartkekse
+Handtücher
+Hartkekse
 Hasenfleisch
 Hautcreme
 Hecht
@@ -114,8 +116,6 @@ Honigmelone
 Hummus
 Hundefutter
 Ingwer
-Ingwer
-Jaromakohl
 Johannisbeere
 Kaffeesahne
 Kakaopulver
@@ -125,21 +125,17 @@ Kaninchenfleisch
 Kardamom
 Karotte
 Karotte
-Karpfen
-Kartoffel
 Kaugummi
 Kefir
+Kekse
 Kirsche
 Kiwi
 Klopapier
 Klopapier
 Knabberartikel
-Knoblauch
-Knoblauch
 Knäckebrot
 Kohlrabi
 Kokusnuss
-Koriander
 Kresse
 Kreuzkümmel
 Kuchen
@@ -158,9 +154,7 @@ Limette
 Limette
 Limonade
 Litschi
-Lorbeer
 Lotion
-Luftreiniger
 Löffel
 Mairübe
 Mais
@@ -179,9 +173,7 @@ Meerrettich
 Melone
 Milchfetterzeugnis
 Milchmischerzeugnis
-Milchmischgetränk
 Milchpulver
-Milchstreichfett
 Mirabelle
 Mohnsamen
 Molke
@@ -197,6 +189,7 @@ Nussriegel
 Nutella
 Nüsse
 Obst
+Obstriegel
 Orange
 Orangensaft
 Oregano
@@ -209,9 +202,7 @@ Parfüm
 Pastinake
 Penne
 Peperoni
-Petersilie
 Petersilienwurzel
-Pferdefleisch
 Pflaume
 Pils
 Pilze
@@ -245,6 +236,7 @@ Rotkraut
 Rucola
 Rübe
 Safran
+Saft
 Sahne
 Sahnedickmilch
 Sahneerzeugnis
@@ -313,9 +305,7 @@ Tortellini
 Trauben
 Trinksauermilch
 Vanille
-Vollkornbrot
 Waldmeister
-Wasabi
 Wassermelone
 Weichspüler
 Wein
@@ -337,8 +327,6 @@ Zucchini
 Zucker
 Zuckerhut
 Zuckermelone
-Zuckerrüben
 Zuckerrübensirup
-Zwetschge
 Zwiebeln
 Öröm
