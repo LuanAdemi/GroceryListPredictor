@@ -4,6 +4,8 @@ import torch
 import torch.nn as nn
 import math
 
+from datetime import datetime, date, timedelta, time
+
 from torch.utils.tensorboard import SummaryWriter
 
 # The LSTM model for every centroid networks
@@ -31,7 +33,7 @@ class LSTM(nn.Module):
 
 # A wrapper class for the LSTM model implementing teacher enforce learning 
 class Network:
-    def __init__(self, vocabSize, hidden_layer_size=1500, lr=0.0001, tw=7, device=torch.device("cpu")):
+    def __init__(self, vocabSize, hidden_layer_size=1500, lr=0.0001, tw=4, device=torch.device("cpu")):
         super().__init__()
         
         assert (tw != 0), "The training window has to be bigger than 0!"
@@ -49,7 +51,7 @@ class Network:
         self.tw = tw
     
     # A class for creating the input tensors for the training with the defined training window
-    def create_inout_sequences(self, input_data, tw=6):
+    def create_inout_sequences(self, input_data, tw=4):
         inout_seq = []
         for i in range(len(input_data)-tw):
             train_seq = input_data[i:i+tw]
@@ -57,13 +59,14 @@ class Network:
             inout_seq.append((train_seq ,train_label))
         return inout_seq
     
-    # The train main loop 
+    # The train main loop (teacher forcing)
     def train(self, tdata, epochs=700, verbose=False):
         self.trainingData = self.create_inout_sequences(torch.FloatTensor(tdata), self.tw)
         
         assert (len(tdata[0]) == self.vocabSize), "The number of features of the input tensor doesn't match the defined vocabSize!"
         
-        writer = SummaryWriter()
+        if verbose:
+            writer = SummaryWriter()
         
         for i in range(epochs):
             for seq, labels in self.trainingData:
@@ -105,7 +108,6 @@ class knetworks:
         
         self.D = []
         self.W = []
-        self.n = 7
         
         self.vocabSize = vocabSize
         
@@ -126,18 +128,17 @@ class knetworks:
                 self.networks[i].model.train()
                 self.networks[i].train(self.data[user], epochs=epochs)
     
-    def calcMean(self, data, n):
-        assert (n <= len(data)), "n > len(data) (needs to be n <= len(data))"
+    def calcMean(self, data):
+        n = len(data)
         mean = np.empty((len(data[0])))
         for i in range(len(data[0])):
             mean[i] = np.sum(data[:n,i])
         return mean/n
     
-    def fit(self, n, max_iters=1, optimize=False, verbose=False):
-        self.n = n
+    def fit(self, max_iters=1, optimize=False, verbose=False):
         means = []
         for user in self.data:
-            means.append(self.calcMean(user, self.n))
+            means.append(self.calcMean(user))
         means = np.array(means)
         
         self.km.fit(means, max_iters=max_iters, optimize=optimize, verbose=verbose)
@@ -145,7 +146,9 @@ class knetworks:
         self.centroids = self.km.centroids
         
         self.D = self.km.calcDistances(self.centroids, means)
-        self.W = np.minimum((1/self.D**2), np.full(self.D.shape, 50))
+
+        self.W = np.minimum((1/(self.D+0.001)**2), np.full(self.D.shape, 50))
+
         self.W = np.array([self.W[i]/sum(self.W[i]) for i in range(self.k)])
     
     def save(self, filepath):
@@ -159,6 +162,7 @@ class knetworks:
         np.savetxt(filepath + '/distances.csv', self.D, delimiter=',')
         # save the weights array
         np.savetxt(filepath + '/weights.csv', self.W, delimiter=',')
+
     
     def load(self, filepath):
         # load the model state_dicts
@@ -175,7 +179,7 @@ class knetworks:
         self.k = len(self.centroids)
     
     def predict(self, data, future=1):
-        mean = self.calcMean(data, self.n)
+        mean = self.calcMean(data)
         distances = self.km.calcDistances(self.centroids, mean)
         weights = np.minimum((1/distances**2), np.full(distances.shape, 50))
         weights = np.array([weights[i]/sum(weights) for i in range(self.k)])
