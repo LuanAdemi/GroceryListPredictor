@@ -38,8 +38,7 @@ def generateFromGenFile(file):
 
     vectors = []
     pxes = []
-
-    for user in range(1,6):
+    for user in range(1,len(lines[0])):
         probs = lines[:,user]
         data, pxs = generate(probs.astype(np.float),features)
         pxes.append(pxs)

@@ -103,6 +103,8 @@ class knetworks:
         self.km = kmeans(k)
         self.k = k
         self.centroids = []
+
+        self.device = device
         
         self.data = data
         
@@ -167,7 +169,7 @@ class knetworks:
     def load(self, filepath):
         # load the model state_dicts
         for i,net in enumerate(self.networks):
-            net.model.load_state_dict(torch.load(filepath + "/models/CN_" + str(i) + ".pth"))
+            net.model.load_state_dict(torch.load(filepath + "/models/CN_" + str(i) + ".pth", map_location=self.device))
             
         # load the centroids array
         self.centroids = np.loadtxt(filepath + '/centroids.csv', delimiter=',')

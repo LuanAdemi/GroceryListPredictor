@@ -1,5 +1,5 @@
 import numpy as np
-from webapp.precommender.kmeans import kmeans
+from kmeans import kmeans
 import torch
 import torch.nn as nn
 import math
@@ -156,7 +156,7 @@ class knetworks:
     def save(self, filepath):
         # save the model state_dicts
         for i, net in enumerate(self.networks):
-            torch.save(net.model.state_dict(), filepath + "/models/CN_" + str(i) + ".pth", map_location=torch.device('cpu'))
+            torch.save(net.model.state_dict(), filepath + "/models/CN_" + str(i) + ".pth")
         
         # save the centroids array
         np.savetxt(filepath + '/centroids.csv', self.centroids, delimiter=',')
