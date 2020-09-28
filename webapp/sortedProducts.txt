@@ -31,7 +31,6 @@ Brezel
 Brokkoli
 Brombeere
 Butter
-Butter
 Butterkekse
 Buttermilch
 Butterschmalz
@@ -42,7 +41,6 @@ Cayennepfeffer
 Champagner
 Champignon
 Chicoree
-Chili
 Chili
 Chinakohl
 Chips
@@ -117,7 +115,6 @@ Honigmelone
 Hummus
 Hundefutter
 Ingwer
-Ingwer
 Jaromakohl
 Joghurt
 Johannisbeere
@@ -128,7 +125,6 @@ Kalbfleisch
 Kaninchenfleisch
 Kardamom
 Karotte
-Karotte
 Karpfen
 Kartoffel
 Katzenfutter
@@ -137,9 +133,7 @@ Kefir
 Kirsche
 Kiwi
 Klopapier
-Klopapier
 Knabberartikel
-Knoblauch
 Knoblauch
 Knollensellerie
 Knäckebrot
@@ -162,7 +156,6 @@ Lauchzwiebeln
 Lavendel
 Leberwurst
 Limette
-Limette
 Limonade
 Litschi
 Lorbeer
@@ -182,7 +175,6 @@ Maracuja
 Margarine
 Marmelade
 Marzipan
-Meerrettich
 Meerrettich
 Melone
 Milchfetterzeugnis
@@ -212,7 +204,6 @@ Oregano
 Pamelo
 Pampelmuse
 Papaya
-Paprika
 Paprika
 Parfüm
 Pastinake
@@ -317,7 +308,6 @@ Toastbrot
 Toilettenpapier
 Toilettenreiniger
 Tomate
-Tomate
 Topinambur
 Tortellini
 Trauben
@@ -340,7 +330,6 @@ Zahnpasta
 Zahnseide
 Ziegenfleisch
 Zimt
-Zitrone
 Zitrone
 Zitronengras
 Zitronensaftkonzentrat
