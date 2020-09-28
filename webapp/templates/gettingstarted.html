@@ -24,6 +24,7 @@
     <img src="{{ url_for('static', filename='img/GLPLogo.png') }}" style="width: 25%;margin-top: 20px;margin-left: 20px">
 </div>
 
+
 <div class="w3-hide-large" style="height: 100%">
     <div class="mobilewarning" style="height: 50%;background-position: center;background-repeat: no-repeat;background-size: contain;margin-left: 10%;margin-right: 10%"></div>
     <h2 style="margin-left: 10%;margin-right: 10%;margin-top: 100px;">It seems that your display is to small to display this site correctly. <br>We are working on a mobile site, but until then, please use a computer or a tablet.</h2>
@@ -31,6 +32,15 @@
 </div>
 
 <div class="spaceLine" style="height: 80%;">
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}<!--this here looks very ugly-->
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }}" style="position:fixed;width: 30%;height:40px;margin-left: 1.5%;margin-right: 5%;margin-top: 30px;display: flex;align-items: center;">
+            <span>{{ message }}</span>
+        </div>
+    {% endfor %}
+{% endwith %}
 
 <div class="w3-container" style="height: 50%;">
     <div class="w3-half" style="display: flex;align-items: center;justify-content: center;height: 100%;">
