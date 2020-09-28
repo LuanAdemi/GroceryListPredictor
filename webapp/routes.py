@@ -175,7 +175,7 @@ def groceryLists():
 	if not current_user.is_authenticated:
 		return redirect(url_for("home"))
 	del grocery_list[:]
-	lists = GroceryList.query.filter_by(user=current_user).all()
+	lists = GroceryList.query.filter_by(user=current_user).order_by(GroceryList.timestamp.desc()).all()
 	image_file = url_for("static",filename="userPictures/" + current_user.image_file)
 	return render_template("dashboard/grocery_lists.html", 
 	username=current_user.username, 
