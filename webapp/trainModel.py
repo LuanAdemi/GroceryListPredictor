@@ -22,7 +22,7 @@ for i,x in enumerate(data):
 
 vectors = np.array(vectors)
 #print(vectors)
-knet = knetworks(3, vectors, len(products),device)
+knet = knetworks(3, vectors, len(products),device)#the 3 needs to be changed to a 6, right?
 #knet.fit(5)
 #knet.train(60,10)
 #knet.save(os.getcwd() + "/webapp/precommender/" + "saves")
