@@ -16,8 +16,8 @@ class LSTM(nn.Module):
 
         self.lstm = nn.LSTM(input_size, hidden_layer_size)
 
-        self.linear1 = nn.Linear(hidden_layer_size, math.ceil((5/4)*hidden_layer_size))
-        self.linear2 = nn.Linear(math.ceil((5/4)*hidden_layer_size), output_size)
+        self.linear1 = nn.Linear(hidden_layer_size, math.ceil(2*hidden_layer_size))
+        self.linear2 = nn.Linear(math.ceil(2*hidden_layer_size), output_size)
         
         self.dropout = nn.Dropout(p=0.2)
         
@@ -33,7 +33,7 @@ class LSTM(nn.Module):
 
 # A wrapper class for the LSTM model implementing teacher enforce learning 
 class Network:
-    def __init__(self, vocabSize, hidden_layer_size=1500, lr=0.0001, tw=4, device=torch.device("cpu")):
+    def __init__(self, vocabSize, hidden_layer_size=2000, lr=0.0001, tw=6, device=torch.device("cpu")):
         super().__init__()
         
         assert (tw != 0), "The training window has to be bigger than 0!"
@@ -51,7 +51,7 @@ class Network:
         self.tw = tw
     
     # A class for creating the input tensors for the training with the defined training window
-    def create_inout_sequences(self, input_data, tw=4):
+    def create_inout_sequences(self, input_data, tw=6):
         inout_seq = []
         for i in range(len(input_data)-tw):
             train_seq = input_data[i:i+tw]
