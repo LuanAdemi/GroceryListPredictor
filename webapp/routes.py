@@ -6,7 +6,6 @@ from webapp.forms import RegistrationForm, LoginForm, UpdateAccountForm, Grocery
 from webapp.dashboard import Dashboard
 from flask import Markup
 import numpy as np
-from webapp.trainModel import knet
 from webapp.precommender.knetworks import knetworks
 from PIL import Image, ImageOps
 import secrets
@@ -21,7 +20,7 @@ import atexit
 def trainModel():
 	device = torch.device(train_on)
 
-	filename = os.getcwd() + "/webapp/" + "allproducts.txt" #may not work for windows
+	filename = os.getcwd() + "/webapp/" + "allproducts2.txt" #may not work for windows
 	with open(filename, "r") as file:
 		f = file.read()
 		products = f.split("\n")
@@ -39,9 +38,9 @@ def trainModel():
 					vectors[i][j][k] = 1
 
 	vectors = np.array(vectors)
-	knet = knetworks(3, vectors, len(products),device)
+	knet = knetworks(7, vectors, len(products),device)
 	knet.fit()
-	knet.train(60,10)
+	knet.train(200,10)
 	knet.save(os.getcwd() + "/webapp/precommender/" + "saves")
 
 #trainModel()
@@ -49,7 +48,7 @@ def trainModel():
 def loadModel():
 	device = torch.device(train_on)
 
-	filename = os.getcwd() + "/webapp/" + "allproducts.txt" #may not work for windows
+	filename = os.getcwd() + "/webapp/" + "allproducts2.txt" #may not work for windows
 	with open(filename, "r") as file:
 		f = file.read()
 		products = f.split("\n")
@@ -63,7 +62,7 @@ def loadModel():
 					vectors[i][j][k] = 1
 
 	vectors = np.array(vectors)
-	knet = knetworks(3, vectors, len(products),device)
+	knet = knetworks(7, vectors, len(products),device)
 	knet.load(os.getcwd() + "/webapp/precommender/" + "saves")
 
 loadModel()

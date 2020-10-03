@@ -10,14 +10,14 @@ from torch.utils.tensorboard import SummaryWriter
 
 # The LSTM model for every centroid networks
 class LSTM(nn.Module):
-    def __init__(self, input_size=20, hidden_layer_size=1500, output_size=20):
+    def __init__(self, input_size=20, hidden_layer_size=800, output_size=20):
         super().__init__()
         self.hidden_layer_size = hidden_layer_size
 
         self.lstm = nn.LSTM(input_size, hidden_layer_size)
 
-        self.linear1 = nn.Linear(hidden_layer_size, math.ceil(2*hidden_layer_size))
-        self.linear2 = nn.Linear(math.ceil(2*hidden_layer_size), output_size)
+        self.linear1 = nn.Linear(hidden_layer_size, math.ceil(1.25*hidden_layer_size))
+        self.linear2 = nn.Linear(math.ceil(1.25*hidden_layer_size), output_size)
         
         self.dropout = nn.Dropout(p=0.2)
         
@@ -28,12 +28,13 @@ class LSTM(nn.Module):
         lstm_out, self.hidden_cell = self.lstm(input_seq.view(len(input_seq) ,1, -1), self.hidden_cell)
         drop_out = self.dropout(lstm_out)
         predictions = self.linear1(drop_out.view(len(input_seq), -1))
+        #predictions = self.dropout(predictions)
         predictions = self.linear2(predictions)
         return predictions[-1]
 
 # A wrapper class for the LSTM model implementing teacher enforce learning 
 class Network:
-    def __init__(self, vocabSize, hidden_layer_size=2000, lr=0.0001, tw=6, device=torch.device("cpu")):
+    def __init__(self, vocabSize, hidden_layer_size=800, lr=0.0001, tw=5, device=torch.device("cpu")):
         super().__init__()
         
         assert (tw != 0), "The training window has to be bigger than 0!"
@@ -51,7 +52,7 @@ class Network:
         self.tw = tw
     
     # A class for creating the input tensors for the training with the defined training window
-    def create_inout_sequences(self, input_data, tw=6):
+    def create_inout_sequences(self, input_data, tw=5):
         inout_seq = []
         for i in range(len(input_data)-tw):
             train_seq = input_data[i:i+tw]
@@ -122,13 +123,13 @@ class knetworks:
         return np.random.choice(np.array(range(len(self.data))),p=self.W[centroid])
     
     def train(self, samples, epochs):
-        print("We are going to train " + str(self.k) + " networks for " + str(epochs) + " epochs with " + str(samples) + " samples each.")
         for i in range(self.k):
             for s in range(samples):
                 user = self.sampleRandom(i)
                 print("[" + str(i) + "][" + str(s) + "->" + str(user) + "] Training..." , end="\r")
                 self.networks[i].model.train()
                 self.networks[i].train(self.data[user], epochs=epochs)
+        print("\n")
     
     def calcMean(self, data):
         n = len(data)
@@ -183,8 +184,10 @@ class knetworks:
     def predict(self, data, future=1):
         mean = self.calcMean(data)
         distances = self.km.calcDistances(self.centroids, mean)
-        weights = np.minimum((1/distances**2), np.full(distances.shape, 50))
+        weights = np.minimum((1/distances**(distances*0.75)+0.0001), np.full(distances.shape, 50))
         weights = np.array([weights[i]/sum(weights) for i in range(self.k)])
+        
+        #print(distances, weights)
         
         prediction = []
         for i, net in enumerate(self.networks):

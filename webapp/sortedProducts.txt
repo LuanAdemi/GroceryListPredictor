@@ -34,7 +34,7 @@ Butter
 Butterkekse
 Buttermilch
 Butterschmalz
-Bärlauch
+BÃ¤rlauch
 Cannelloni
 Capelline
 Cayennepfeffer
@@ -49,8 +49,8 @@ Clementine
 Clotted Cream
 Coca Cola
 Cranberries
-Crème double
-Crème fraîche
+CrÃ¨me double
+CrÃ¨me fraÃ®che
 Curcuma
 Curry
 Dattel
@@ -69,7 +69,7 @@ Erdbeere
 Erdbeersaft
 Erdnussbutter
 Erdnussflips
-Erdnüsse
+ErdnÃ¼sse
 Essmesser
 Fanta
 Farfalle
@@ -79,7 +79,7 @@ Feine Backwaren
 Feldsalat
 Fenchel
 Feuchtes Toilettenpapier
-Feuchttücher
+FeuchttÃ¼cher
 Fladenbrot
 Flunder
 Forelle
@@ -87,21 +87,21 @@ Fruchtjoghurt
 Fruchtkefir
 Fusilli
 Gabel
-Geflügelfleisch
+GeflÃ¼gelfleisch
 Gelbe Beete
-Gemüse
+GemÃ¼se
 Geschenkkarte
-Gewürznelke
-Gewürzstreuer
+GewÃ¼rznelke
+GewÃ¼rzstreuer
 Glutenfreies Brot
 Gnocchi
 Granatapfel
 Grapefruit
 Guacamole
-Gummibärchen
+GummibÃ¤rchen
 Gurke
 Haferdrink
-Handtücher
+HandtÃ¼cher
 Hartkekse
 Hasenfleisch
 Hautcreme
@@ -136,19 +136,19 @@ Klopapier
 Knabberartikel
 Knoblauch
 Knollensellerie
-Knäckebrot
+KnÃ¤ckebrot
 Kohlrabi
 Kokusnuss
 Kopfsalat
 Koriander
 Kresse
-Kreuzkümmel
+KreuzkÃ¼mmel
 Kuchen
 Kugelfisch
 Kurkuma
-Käse
-Küchenmesser
-Kürbis
+KÃ¤se
+KÃ¼chenmesser
+KÃ¼rbis
 Lammfleisch
 Lasagne
 Lauch
@@ -162,8 +162,8 @@ Lorbeer
 Lotion
 Luftreiniger
 Lutscher
-Löffel
-Mairübe
+LÃ¶ffel
+MairÃ¼be
 Mais
 Majoran
 Make-Up
@@ -179,7 +179,7 @@ Meerrettich
 Melone
 Milchfetterzeugnis
 Milchmischerzeugnis
-Milchmischgetränk
+MilchmischgetrÃ¤nk
 Milchpulver
 Milchstreichfett
 Minze
@@ -188,7 +188,7 @@ Mohnsamen
 Molke
 Molkenpulver
 Muskat
-Möhre
+MÃ¶hre
 Naan
 Nagellack
 Napf
@@ -196,7 +196,7 @@ Nektarine
 Nougatcreme
 Nussriegel
 Nutella
-Nüsse
+NÃ¼sse
 Obst
 Orange
 Orangensaft
@@ -205,7 +205,7 @@ Pamelo
 Pampelmuse
 Papaya
 Paprika
-Parfüm
+ParfÃ¼m
 Pastinake
 Penne
 Peperoni
@@ -244,7 +244,7 @@ Rote Beete
 Rotkohl
 Rotkraut
 Rucola
-Rübe
+RÃ¼be
 Safran
 Sahne
 Sahnedickmilch
@@ -287,23 +287,23 @@ Spinat
 Spitzkohl
 Sprite
 Sprudelwasser
-Spültabs
+SpÃ¼ltabs
 Stachelbeere
 Stapelchips
 Steinofenbrot
 Sternanis
 Stevia
 Stilles Wasser
-Streichkäse
+StreichkÃ¤se
 Streichrahm
 Streichwurst
 Studentenfutter
-Süßkatoffel
-Süßrahmbutter
-Taschentücher
+SÃ¼ÃŸkatoffel
+SÃ¼ÃŸrahmbutter
+TaschentÃ¼cher
 Teller
 Thymian
-Tiefkühlpizza
+TiefkÃ¼hlpizza
 Toastbrot
 Toilettenpapier
 Toilettenreiniger
@@ -318,14 +318,14 @@ Waldmeister
 Wasabi
 Waschmittel
 Wassermelone
-Weichspüler
+WeichspÃ¼ler
 Wein
 Weizenbrot
-Weißbrot
-Weißkraut
+WeiÃŸbrot
+WeiÃŸkraut
 Wels
 Wirsing
-Zahnbürste
+ZahnbÃ¼rste
 Zahnpasta
 Zahnseide
 Ziegenfleisch
@@ -337,9 +337,9 @@ Zucchini
 Zucker
 Zuckerhut
 Zuckermelone
-Zuckerrüben
-Zuckerrübensirup
+ZuckerrÃ¼ben
+ZuckerrÃ¼bensirup
 Zwetschge
 Zwiebel
 Zwiebeln
-Öröm
+Ã–rÃ¶m
