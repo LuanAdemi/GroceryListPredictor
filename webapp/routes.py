@@ -75,7 +75,7 @@ atexit.register(lambda: train_scheduler.shutdown())
 grocery_list = []
 
 features = np.array(["Butter","Erdnussbutter","Guacamole","Honig","Hummus","Leberwurst","Marmelade","Margarine","Nougatcreme","Nutella","Schmalz","Sirup","Streichkäse","Brot","Knäckebrot","Fisch","Steak","Aubergine","Avocado","Blumenkohl","Bohnen","Brokkoli","Salat","Gurke","Kartoffel","Knoblauch","Spinat","Tomate","Tomatensoße","Zucchini","Zwiebeln","Karotte","Mais","Paprika","Ingwer","Spargel","Bier","Limonade","Wein","Senf","Joghurt","Käse","Quark","Taschentücher","Zahnpasta","Toilettenpapier","Rasierschaum","Seife","Shampoo","Nudeln","Reis","Ananas","Apfel","Banane","Erdbeere","Birne","Aprikose","Dattel","Wassermelone","Orange","Mango","Pfirsich","Pflaume","Salami","Schinken","Würstchen"])
-filename = os.getcwd() + "/webapp/" + "allproducts.txt"#may not work for windows
+filename = os.getcwd() + "/webapp/" + "allproducts2.txt"#may not work for windows
 with open(filename, "r") as file:
 	f = file.read()
 	products = f.split("\n")
@@ -254,11 +254,6 @@ def generate_list():
 @app.route("/dashboard/create_list", methods=["GET","POST"])
 @login_required
 def create_list():
-	filename = os.getcwd() + "/webapp/" + "allproducts.txt"#may not work for windows
-	
-	with open(filename, "r") as file:
-		f = file.read()
-		products = f.split("\n")
 	image_file = url_for("static", filename="userPictures/" + current_user.image_file)
 	if request.method == "POST":
 		if "create-list" in request.form:
