@@ -46,6 +46,7 @@ def trainModel():
 #trainModel()
 
 def loadModel():
+	global knet
 	device = torch.device(train_on)
 
 	filename = os.getcwd() + "/webapp/" + "allproducts2.txt" #may not work for windows
@@ -80,6 +81,8 @@ with open(filename, "r") as file:
 	f = file.read()
 	products = f.split("\n")
 
+#device = torch.device(train_on)
+#knet = knetworks(7, [], len(products),device)
 #knet.load("webapp/precommender/saves")
 
 @app.route("/")
